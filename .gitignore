@@ -1,0 +1,17 @@
+# Dependencies and production output
+node_modules/
+dist/
+
+# Local environment and Vercel metadata
+.env
+.env.*
+!.env.example
+.vercel/
+
+# OS and editor files
+.DS_Store
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
