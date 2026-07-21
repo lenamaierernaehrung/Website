@@ -47,7 +47,7 @@ function Container({
 }) {
   return (
     <div
-      className={`mobile-container mx-auto w-full px-4 sm:px-6 lg:px-8 ${className}`}
+      className={`mx-auto w-full px-4 sm:px-6 lg:px-8 ${className}`}
       style={{ maxWidth: narrow ? 800 : 1120 }}
     >
       {children}
@@ -126,7 +126,7 @@ function SectionLabel({
 }) {
   return (
     <p
-      className="mobile-section-label uppercase tracking-[0.18em] mb-4"
+      className="uppercase tracking-[0.18em] mb-4"
       style={{
         fontFamily: F.sc,
         fontSize: 11,
@@ -149,7 +149,7 @@ function SectionHeading({
 }) {
   return (
     <h2
-      className={`mobile-section-heading font-semibold leading-[1.18] ${className}`}
+      className={`font-semibold leading-[1.18] ${className}`}
       style={{
         fontFamily: F.heading,
         fontSize: "clamp(1.625rem, 3.5vw, 2.5rem)",
@@ -217,7 +217,7 @@ function PrimaryBtn({
       onClick={onClick}
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
-      className={`mobile-primary-button inline-flex items-center justify-center gap-3 rounded-full cursor-pointer min-h-[52px] ${full ? "w-full" : ""} px-[8px] py-[0px] mx-[10px] my-[0px]`}
+      className={`inline-flex items-center justify-center gap-3 rounded-full cursor-pointer min-h-[52px] ${full ? "w-full" : ""} px-[8px] py-[0px] mx-[10px] my-[0px]`}
       style={{
         background: `linear-gradient(135deg, ${GOLD}55 0%, ${GOLD}25 100%)`,
         border: `1px solid ${GOLD}80`,
@@ -243,7 +243,7 @@ function GhostBtn({
       onClick={onClick}
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
-      className={`mobile-ghost-button inline-flex items-center justify-center gap-3 rounded-full cursor-pointer min-h-[52px] px-7 ${full ? "w-full" : ""}`}
+      className={`inline-flex items-center justify-center gap-3 rounded-full cursor-pointer min-h-[52px] px-7 ${full ? "w-full" : ""}`}
       style={{
         background: "transparent",
         border: `1px solid rgba(244,244,244,0.3)`,
@@ -266,7 +266,7 @@ function FeatureCard({
 }) {
   return (
     <div
-      className="mobile-feature-card rounded-2xl p-7 h-full flex flex-col gap-4"
+      className="rounded-2xl p-7 h-full flex flex-col gap-4"
       style={{
         background: CARD_BG,
         border: `1px solid ${GOLD}55`,
@@ -316,7 +316,7 @@ function ServiceFeature({
   desc: string;
 }) {
   return (
-    <div className="mobile-service-feature flex gap-4 items-start">
+    <div className="flex gap-4 items-start">
       <div
         className="shrink-0 w-9 h-9 rounded-[10px] flex items-center justify-center mt-0.5"
         style={{ background: `${GOLD}18` }}
@@ -422,7 +422,7 @@ function Nav({
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: navVisible ? 1 : 0, y: navVisible ? 0 : -24 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="mobile-nav fixed top-0 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4"
+        className="fixed top-0 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4"
         style={{ pointerEvents: navVisible ? "auto" : "none" }}
       >
         <div
@@ -649,7 +649,7 @@ function Hero({
   return (
     <section
       style={{ backgroundImage: G.hero, minHeight: "100svh" }}
-      className="mobile-hero relative flex flex-col items-center justify-center text-center pt-[68px] px-4 sm:px-6"
+      className="relative flex flex-col items-center justify-center text-center pt-[68px] px-4 sm:px-6"
     >
       <div style={{ maxWidth: 680, width: "100%" }}>
         <Reveal>
@@ -822,7 +822,7 @@ function About() {
     <section
       id="about"
       style={{ backgroundImage: G.about }}
-      className="mobile-section mobile-about py-0 md:pt-8 md:pb-32 scroll-mt-[90px]"
+      className="py-0 md:pt-8 md:pb-32 scroll-mt-[90px]"
     >
       <Container>
         <div className="flex flex-col md:flex-row gap-12 lg:gap-20 items-end">
@@ -859,7 +859,7 @@ function About() {
             </Reveal>
             <Reveal
               delay={0.12}
-              className="mobile-about-copy flex flex-col gap-4"
+              className="flex flex-col gap-4"
             >
               {[
                 "Ich bin zertifizierte Ernährungsberaterin mit Fokus auf eine Ernährungsweise, die im echten Leben funktioniert, im stressigen Alltag genauso wie am Wochenende. Mein Ansatz: weniger starre Regeln, dafür mehr Verständnis, um schlaue Entscheidungen treffen zu können.",
@@ -986,7 +986,7 @@ function Philosophy() {
   return (
     <section
       style={{ backgroundImage: G.philosophy }}
-      className="mobile-section mobile-philosophy py-24 md:py-32"
+      className="py-24 md:py-32"
     >
       <Container>
         <Reveal className="text-center mb-16">
@@ -1183,7 +1183,7 @@ function Services({
     const [hovered, setHovered] = useState(false);
     return (
       <div
-        className="mobile-service-card rounded-2xl p-7 md:p-9 flex flex-col h-full"
+        className="rounded-2xl p-7 md:p-9 flex flex-col h-full"
         style={{
           background: CARD_BG,
           border: `1px solid ${GOLD_LITE}35`,
@@ -1273,7 +1273,7 @@ function Services({
     <section
       id="services"
       style={{ backgroundImage: G.services }}
-      className="mobile-section mobile-services py-0 md:pt-8 md:pb-32 scroll-mt-[90px]"
+      className="py-0 md:pt-8 md:pb-32 scroll-mt-[90px]"
     >
       <Container>
         <Reveal className="text-center mb-4">
@@ -1402,7 +1402,7 @@ function WhyItWorks() {
   return (
     <section
       style={{ backgroundImage: G.why }}
-      className="mobile-section mobile-why py-24 md:py-32"
+      className="py-24 md:py-32"
     >
       <Container>
         <Reveal className="text-center mb-4">
@@ -1442,45 +1442,22 @@ function WhyItWorks() {
 // CONTACT
 // ────────────────────────────────────────────────────────────────
 function Contact() {
-  const [copyStatus, setCopyStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
+  const [copied, setCopied] = useState(false);
   const email = "kontakt@lenamaier-ernaehrung.de";
-  const copied = copyStatus === "success";
 
   const copy = async () => {
     try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(email);
-      } else {
-        // Local network previews on mobile browsers are served via insecure HTTP.
-        const textArea = document.createElement("textarea");
-        textArea.value = email;
-        textArea.setAttribute("readonly", "");
-        textArea.style.position = "fixed";
-        textArea.style.opacity = "0";
-        document.body.appendChild(textArea);
-        textArea.select();
-
-        const wasCopied = document.execCommand("copy");
-        textArea.remove();
-
-        if (!wasCopied) throw new Error("Copy command was rejected");
-      }
-
-      setCopyStatus("success");
-    } catch {
-      setCopyStatus("error");
-    }
-
-    setTimeout(() => setCopyStatus("idle"), 2200);
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    } catch {}
   };
 
   return (
     <section
       id="contact"
       style={{ backgroundImage: G.contact }}
-      className="mobile-section mobile-contact py-0 md:pt-8 md:pb-56 scroll-mt-[90px]"
+      className="py-0 md:pt-8 md:pb-56 scroll-mt-[90px]"
     >
       <Container narrow>
         <Reveal className="text-center mb-14">
@@ -1502,7 +1479,7 @@ function Contact() {
 
         <Reveal delay={0.1}>
           <div
-            className="mobile-contact-card rounded-3xl overflow-hidden"
+            className="rounded-3xl overflow-hidden"
             style={{
               background: CARD_DARK,
               border: `1px solid ${GOLD}35`,
@@ -1716,30 +1693,10 @@ function Contact() {
                     </svg>
                   )}
                 </div>
+                <span className="sr-only" aria-live="polite">
+                  {copied ? "E-Mail-Adresse kopiert" : ""}
+                </span>
               </motion.button>
-              <motion.p
-                aria-live="polite"
-                className="text-center"
-                initial={false}
-                animate={{
-                  opacity: copyStatus === "idle" ? 0 : 1,
-                  y: copyStatus === "idle" ? -3 : 0,
-                }}
-                transition={{ duration: 0.2 }}
-                style={{
-                  minHeight: 20,
-                  marginTop: 8,
-                  fontFamily: F.body,
-                  fontSize: 13,
-                  color: GOLD,
-                }}
-              >
-                {copyStatus === "success"
-                  ? "E-Mail-Adresse wurde kopiert."
-                  : copyStatus === "error"
-                    ? "Kopieren nicht möglich. Bitte erneut versuchen."
-                    : ""}
-              </motion.p>
             </div>
           </div>
         </Reveal>
@@ -1759,7 +1716,7 @@ function Footer({
   return (
     <footer style={{ backgroundImage: G.footer }}>
       <div style={{ borderTop: `2px solid ${GOLD_LITE}40` }}>
-        <Container className="mobile-footer pt-16 pb-0">
+        <Container className="pt-16 pb-0">
           {/* Three-column row */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 pb-12 sm:items-start">
             {/* Brand — left-aligned */}
@@ -3075,66 +3032,6 @@ function ProgressBar() {
 }
 
 // ────────────────────────────────────────────────────────────────
-// BACK TO TOP
-// ────────────────────────────────────────────────────────────────
-function BackToTop() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const updateVisibility = () => setVisible(window.scrollY > 560);
-    updateVisibility();
-    window.addEventListener("scroll", updateVisibility, { passive: true });
-    return () => window.removeEventListener("scroll", updateVisibility);
-  }, []);
-
-  if (!visible) return null;
-
-  return (
-    <motion.button
-      type="button"
-      initial={{ opacity: 0, y: 12, scale: 0.94 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 12, scale: 0.94 }}
-      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ scale: 1.06 }}
-      whileTap={{ scale: 0.94 }}
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="back-to-top"
-      aria-label="Nach oben scrollen"
-      title="Nach oben"
-      style={{
-        position: "fixed",
-        right: 28,
-        bottom: 28,
-        zIndex: 150,
-        width: 48,
-        height: 48,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: "50%",
-        background: "rgba(43,38,37,0.86)",
-        border: `1px solid ${GOLD}90`,
-        boxShadow: "0 12px 28px rgba(0,0,0,0.3)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        color: TEXT,
-      }}
-    >
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-        <path
-          d="M4.5 12.5 10 7l5.5 5.5M10 7v9"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </motion.button>
-  );
-}
-
-// ────────────────────────────────────────────────────────────────
 // APP
 // ────────────────────────────────────────────────────────────────
 export default function App() {
@@ -3142,22 +3039,8 @@ export default function App() {
     useState<LegalPageId | null>(null);
 
   const scrollTo = (id: string) => {
-    const section = document.getElementById(id);
-    const heading = section?.querySelector("h2");
-    const image = section?.querySelector("img");
-    const target =
-      id === "about" && window.matchMedia("(max-width: 767px)").matches
-        ? image ?? heading ?? section
-        : heading ?? section;
-
-    if (target) {
-      const navOffset = 96;
-      const top =
-        target.getBoundingClientRect().top +
-        window.scrollY -
-        navOffset;
-      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
-    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   const openContactAndClose = () => {
@@ -3210,7 +3093,6 @@ export default function App() {
       )}
 
       <Nav onScrollTo={scrollTo} />
-      <BackToTop />
       <main>
         <Hero onScrollTo={scrollTo} />
         <About />
