@@ -1457,7 +1457,7 @@ function Contact() {
     <section
       id="contact"
       style={{ backgroundImage: G.contact }}
-      className="py-0 md:pt-8 md:pb-56 scroll-mt-[90px]"
+      className="pt-0 pb-16 md:pt-8 md:pb-56 scroll-mt-[90px]"
     >
       <Container narrow>
         <Reveal className="text-center mb-14">
@@ -1718,13 +1718,13 @@ function Footer({
       <div style={{ borderTop: `2px solid ${GOLD_LITE}40` }}>
         <Container className="pt-16 pb-0">
           {/* Three-column row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 pb-12 sm:items-start">
-            {/* Brand — left-aligned */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 pb-12 items-start justify-items-center">
+            {/* Brand — centered on mobile */}
             <button
               onClick={() =>
                 window.scrollTo({ top: 0, behavior: "smooth" })
               }
-              className="focus:outline-none w-fit text-left"
+              className="focus:outline-none w-fit text-center mx-auto"
             >
               <p
                 className="font-semibold leading-[1.4]"
@@ -1749,8 +1749,8 @@ function Footer({
               </p>
             </button>
 
-            {/* Kontakt — left-aligned */}
-            <div className="text-left">
+            {/* Kontakt — centered on mobile */}
+            <div className="text-center">
               <p
                 className="mb-4 uppercase"
                 style={{
@@ -1763,7 +1763,7 @@ function Footer({
               >
                 Kontakt
               </p>
-              <div className="flex flex-col gap-2 items-start">
+              <div className="flex flex-col gap-2 items-center">
                 <a
                   href="mailto:kontakt@lenamaier-ernaehrung.de"
                   style={{
@@ -1804,8 +1804,8 @@ function Footer({
             </div>
           </div>
 
-          {/* Rechtliches — left-aligned */}
-          <div className="text-left">
+          {/* Rechtliches — centered on mobile */}
+          <div className="text-center">
             <p
               className="mb-4 uppercase"
               style={{
@@ -1818,7 +1818,7 @@ function Footer({
             >
               Rechtliches
             </p>
-            <div className="flex flex-col gap-2 items-start">
+            <div className="flex flex-col gap-2 items-center">
               {(
                 [
                   ["Impressum", "impressum"],
