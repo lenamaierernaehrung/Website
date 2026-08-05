@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import { Analytics } from "@vercel/analytics/react";
 import svgPaths from "@/imports/ErnahrungsberatungLenaMaier/svg-rf8dr8pybf";
 import svgScroll from "@/imports/ScrollIndicator/svg-axvrxmtrd7";
 import imgLenaMaier from "@/imports/ErnahrungsberatungLenaMaier/d5d32fa9064166e615e6332edb6bc5c225bc6936.png";
@@ -3105,6 +3106,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer onOpenLegal={(id) => setActivePage(id)} />
+      <Analytics />
     </>
   );
 }
