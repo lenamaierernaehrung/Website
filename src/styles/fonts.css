@@ -1,1 +1,2 @@
-@import url('https://fonts.googleapis.com/css2?family=Arsenal+SC:wght@400&family=Arsenal:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&family=Inter:wght@500&display=swap');
+/* Fonts are loaded in index.html (preconnect + stylesheet link) so they
+   start downloading before the app bundle has been parsed. */

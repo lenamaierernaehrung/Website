@@ -6,14 +6,13 @@ import {
   Navigate,
   Outlet,
   RouterProvider,
-  ScrollRestoration,
   createBrowserRouter,
   useLocation,
   useNavigate,
 } from "react-router";
 import svgPaths from "@/imports/ErnahrungsberatungLenaMaier/svg-rf8dr8pybf";
 import svgScroll from "@/imports/ScrollIndicator/svg-axvrxmtrd7";
-import imgLenaMaier from "@/imports/ErnahrungsberatungLenaMaier/d5d32fa9064166e615e6332edb6bc5c225bc6936.png";
+import imgLenaMaier from "@/imports/ErnahrungsberatungLenaMaier/lena-maier.webp";
 import {
   CARD_DARK,
   Container,
@@ -36,6 +35,7 @@ import { CoachingPage } from "./pages/CoachingPage";
 import { EinzelberatungPage } from "./pages/EinzelberatungPage";
 import { VortragPage } from "./pages/VortragPage";
 import {
+  ScrollManager,
   useGoToSection,
   usePageMeta,
   type ContactState,
@@ -376,34 +376,40 @@ function Hero({
         </Reveal>
 
         <Reveal delay={0.08}>
-          <h1
-            className="font-bold uppercase mb-2 leading-[1.1] w-full"
-            style={{
-              fontFamily: F.heading,
-              // Same size as before wherever the word fits; below
-              // ~430px it scales down so "Ernährungsberatung" stays
-              // inside the viewport.
-              fontSize:
-                "clamp(1.15rem, min(6.1vw, max(1.5rem, 5.5vw)), 3rem)",
-              color: TEXT,
-              letterSpacing: "0.025em",
-              wordBreak: "keep-all",
-              overflowWrap: "normal",
-            }}
-          >
-            Ernährungsberatung
+          {/* One h1 with the full name for search engines; both lines
+              keep their previous look */}
+          <h1 style={{ fontWeight: 400, lineHeight: 1.5, margin: 0 }}>
+            <span
+              className="block font-bold uppercase mb-2 leading-[1.1] w-full"
+              style={{
+                fontFamily: F.heading,
+                // Same size as before wherever the word fits; below
+                // ~430px it scales down so "Ernährungsberatung" stays
+                // inside the viewport.
+                fontSize:
+                  "clamp(1.15rem, min(6.1vw, max(1.5rem, 5.5vw)), 3rem)",
+                color: TEXT,
+                letterSpacing: "0.025em",
+                wordBreak: "keep-all",
+                overflowWrap: "normal",
+              }}
+            >
+              Ernährungsberatung
+            </span>{" "}
+            <span
+              className="block uppercase mb-10"
+              style={{
+                fontFamily: F.sc,
+                fontSize: "clamp(1rem, 3vw, 1.75rem)",
+                fontWeight: 400,
+                lineHeight: 1.5,
+                color: TEXT,
+                letterSpacing: "clamp(0.3rem, 1.4vw, 1rem)",
+              }}
+            >
+              Lena Maier
+            </span>
           </h1>
-          <p
-            className="uppercase mb-10"
-            style={{
-              fontFamily: F.sc,
-              fontSize: "clamp(1rem, 3vw, 1.75rem)",
-              color: TEXT,
-              letterSpacing: "clamp(0.3rem, 1.4vw, 1rem)",
-            }}
-          >
-            Lena Maier
-          </p>
         </Reveal>
 
         <Reveal delay={0.18}>
@@ -552,7 +558,10 @@ function About() {
               >
                 <img
                   src={imgLenaMaier}
-                  alt="Lena Maier"
+                  alt="Lena Maier, Ernährungsberaterin, lächelnd im schwarzen Rollkragenpullover"
+                  width={1800}
+                  height={1200}
+                  decoding="async"
                   className="w-full h-full object-cover object-top"
                 />
               </div>
@@ -1340,10 +1349,7 @@ function LegalPage({ id }: { id: LegalOnlyId }) {
   const content = LEGAL_CONTENT[id];
   const navigate = useNavigate();
   const location = useLocation();
-  usePageMeta(
-    `${content.title} | Ernährungsberatung Lena Maier`,
-    `${content.title} der Ernährungsberatung Lena Maier.`,
-  );
+  usePageMeta();
   // Back to where the visitor came from, or home on a direct visit
   const onBack = () =>
     location.key !== "default" ? navigate(-1) : navigate("/");
@@ -1487,10 +1493,7 @@ function LegalPage({ id }: { id: LegalOnlyId }) {
 // PAGES & ROUTING
 // ────────────────────────────────────────────────────────────────
 function HomePage() {
-  usePageMeta(
-    "Ernährungsberatung Lena Maier | Beratung & Vorträge",
-    "Persönliche Online-Ernährungsberatung mit Lena Maier: 8-Wochen-Begleitung, Einzelberatung für konkrete Fragen und Ernährungsvorträge für Unternehmen, Vereine und Bildungseinrichtungen.",
-  );
+  usePageMeta();
   const goTo = useGoToSection();
   return (
     <main>
@@ -1531,8 +1534,8 @@ function RootLayout() {
         }
       `}</style>
       <Outlet />
-      {/* Top on new pages, saved position on back/forward, #hash targets */}
-      <ScrollRestoration />
+      {/* Top on new pages and reloads, #hash targets, back/forward positions */}
+      <ScrollManager />
       <Analytics />
     </MotionConfig>
   );

@@ -1,6 +1,6 @@
-import gesundEssenImage from "../../assets/vortraege/gesund-essen-im-berufsalltag.png";
-import sporternaehrungImage from "../../assets/vortraege/sporternaehrung.png";
-import ernaehrungVerstehenImage from "../../assets/vortraege/ernaehrung-verstehen.png";
+import gesundEssenImage from "../../assets/vortraege/gesund-essen-im-berufsalltag.webp";
+import sporternaehrungImage from "../../assets/vortraege/sporternaehrung.webp";
+import ernaehrungVerstehenImage from "../../assets/vortraege/ernaehrung-verstehen.webp";
 
 // ── Angebote & Vorträge ──────────────────────────────────────────
 // Single source for prices, scopes and lecture content. Home cards and
@@ -100,7 +100,6 @@ export type Vortrag = {
   topics: string[];
   audienceText: string;
   audienceNote?: string;
-  metaDescription: string;
   // Shared by the lecture card and detail page.
   image?: string;
   imageAlt: string;
@@ -126,8 +125,6 @@ export const VORTRAEGE: Vortrag[] = [
     ],
     audienceText:
       "Geeignet für Mitarbeitendenveranstaltungen, Gesundheitstage und betriebliche Gesundheitsaktionen.",
-    metaDescription:
-      "Ernährungsvortrag für Unternehmen: wie gesunde Ernährung im Arbeitsalltag mit wenig Zeit gelingt. 60 Minuten inklusive Fragerunde, online oder vor Ort.",
     image: gesundEssenImage,
     imageAlt: "Ausgewogene Mittagsmahlzeit am Arbeitsplatz",
   },
@@ -150,8 +147,6 @@ export const VORTRAEGE: Vortrag[] = [
     ],
     audienceText:
       "Geeignet für Sportvereine sowie erwachsene Freizeit- und Hobbysportler.",
-    metaDescription:
-      "Vortrag zur Sporternährung für Sportvereine: Energiebedarf, Proteine, Kohlenhydrate, Regeneration und Nahrungsergänzung verständlich eingeordnet.",
     image: sporternaehrungImage,
     imageAlt: "Sportlerin bei einer Pause mit Wasserflasche und Snack",
   },
@@ -176,8 +171,6 @@ export const VORTRAEGE: Vortrag[] = [
       "Geeignet für Organisationen, Bildungseinrichtungen und allgemein interessierte Gruppen.",
     audienceNote:
       "Bei Veranstaltungen für Jugendliche vermittle ich die Inhalte altersgerecht und spreche über Ernährung, ohne Körpergewicht zu bewerten.",
-    metaDescription:
-      "Vortrag für Organisationen und Bildungseinrichtungen: Ernährungsgrundlagen verstehen und Ernährungsmythen einordnen. 60 Minuten, online oder vor Ort.",
     image: ernaehrungVerstehenImage,
     imageAlt: "Frisches Gemüse, Hülsenfrüchte und Vollkornprodukte auf einem Tisch",
   },

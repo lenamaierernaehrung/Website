@@ -8,7 +8,8 @@ import {
   Pill,
   TextLink,
 } from "../components/offer-ui";
-import { VORTRAEGE, type Vortrag } from "../content/angebote";
+import { VORTRAEGE, vortragPath, type Vortrag } from "../content/angebote";
+import { PAGE_META } from "../content/seo";
 import { useGoToSection, usePageMeta } from "../navigation";
 import {
   DetailHero,
@@ -34,7 +35,12 @@ export function VortragPage() {
 }
 
 function VortragDetail({ v }: { v: Vortrag }) {
-  usePageMeta(`Vortrag: ${v.title} | Lena Maier`, v.metaDescription);
+  usePageMeta();
+  if (
+    import.meta.env.DEV &&
+    PAGE_META[vortragPath(v)]?.title !== `${v.title} | Lena Maier`
+  )
+    console.warn(`seo.ts: Titel für ${v.slug} passt nicht zu angebote.ts`);
   const goTo = useGoToSection();
   const mailto = `mailto:${EMAIL}?subject=${encodeURIComponent(
     `Anfrage Vortrag: ${v.title}`,

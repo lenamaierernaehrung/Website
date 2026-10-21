@@ -28,10 +28,7 @@ const INCLUDED = [
 ];
 
 export function EinzelberatungPage() {
-  usePageMeta(
-    "Einzelberatung: 60 Minuten Online-Ernährungsberatung | Lena Maier",
-    "Persönliche Online-Ernährungsberatung für konkrete Fragen: 60 Minuten, gezielt vorbereitet, mit Empfehlungen für deinen Alltag. Einmaliger Gesamtpreis 69 €.",
-  );
+  usePageMeta();
   const goTo = useGoToSection();
 
   return (

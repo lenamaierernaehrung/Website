@@ -50,10 +50,7 @@ const KENNENLERNEN = [
 ];
 
 export function CoachingPage() {
-  usePageMeta(
-    "8-Wochen-Online-Ernährungscoaching | Lena Maier",
-    "Persönliches Online-Ernährungscoaching über 8 Wochen: 5 Videogespräche, Begleitung zwischen den Terminen und eine persönliche Abschlussübersicht. Ohne starre Pläne und Verbote.",
-  );
+  usePageMeta();
   const goTo = useGoToSection();
 
   return (

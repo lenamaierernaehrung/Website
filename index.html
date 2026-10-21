@@ -1,25 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title, description, canonical and social tags are filled per page
+         from src/app/content/seo.ts (build: vite.config.ts, runtime: usePageMeta) -->
+    <title>Ernährungsberatung online | Lena Maier</title>
+    <meta name="description" content="Du möchtest deine Ernährung verbessern oder gesund abnehmen? Ich unterstütze dich mit persönlicher Online-Ernährungsberatung und individueller Begleitung." />
+    <link rel="canonical" href="https://www.lenamaier-ernaehrung.de/" />
 
-  <!DOCTYPE html>
-  <html lang="de">
-    <head>
-      
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     <title>Ernährungsberatung Lena Maier | Online-Coaching, Beratung & Vorträge</title>
-     <meta name="description" content="Persönliche Online-Ernährungsberatung mit Lena Maier: 8-Wochen-Coaching, Einzelberatung für konkrete Fragen und Ernährungsvorträge für Unternehmen, Vereine und Bildungseinrichtungen." />
-     <meta name="theme-color" content="#2b2625" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content="Ernährungsberatung Lena Maier" />
+    <meta property="og:title" content="Ernährungsberatung online | Lena Maier" />
+    <meta property="og:description" content="Du möchtest deine Ernährung verbessern oder gesund abnehmen? Ich unterstütze dich mit persönlicher Online-Ernährungsberatung und individueller Begleitung." />
+    <meta property="og:url" content="https://www.lenamaier-ernaehrung.de/" />
+    <meta property="og:image" content="https://www.lenamaier-ernaehrung.de/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Porträt von Lena Maier, Ernährungsberaterin" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ernährungsberatung online | Lena Maier" />
+    <meta name="twitter:description" content="Du möchtest deine Ernährung verbessern oder gesund abnehmen? Ich unterstütze dich mit persönlicher Online-Ernährungsberatung und individueller Begleitung." />
+    <meta name="twitter:image" content="https://www.lenamaier-ernaehrung.de/og-image.jpg" />
+    <meta name="theme-color" content="#2b2625" />
 
-<link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
 
-      <style>html, body { height: 100%; margin: 0; background: #2b2625; } #root { height: 100%; }</style>
-      
-    </head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arsenal+SC:wght@400&family=Arsenal:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&family=Inter:wght@500&display=swap" />
 
-    <body>
-      
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-      
-    </body>
-  </html>
-  
+    <script>
+      // A reload starts at the top of the page: the app positions the
+      // page itself, and a #section left over from an earlier in-page
+      // jump must not send the reloaded page back down there.
+      history.scrollRestoration = "manual";
+      try {
+        var nav = performance.getEntriesByType("navigation")[0];
+        if (nav && nav.type === "reload" && location.hash) {
+          history.replaceState(history.state, "", location.pathname + location.search);
+        }
+      } catch (e) {}
+    </script>
+
+    <style>html, body { height: 100%; margin: 0; background: #2b2625; } #root { height: 100%; }</style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
