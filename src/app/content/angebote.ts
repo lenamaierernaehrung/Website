@@ -11,8 +11,8 @@ export type Price = {
   note: string;
 };
 
-// Introductory offer for the coaching. To end the campaign, set
-// `COACHING_INTRO` to null — card and detail page fall back to the
+// Introductory offer for the 8-week consultation. To end the campaign, set
+// `BERATUNG_INTRO` to null — card and detail page fall back to the
 // regular price without any further changes.
 export type IntroOffer = {
   label: string;
@@ -21,15 +21,15 @@ export type IntroOffer = {
   regularNote: string;
 };
 
-export const COACHING_INTRO: IntroOffer | null = {
+export const BERATUNG_INTRO: IntroOffer | null = {
   label: "Einführungspreis",
   amount: "349 €",
   note: "für die ersten drei Plätze",
   regularNote: "Geplanter regulärer Paketpreis: 449 €",
 };
 
-export const COACHING = {
-  path: "/8-wochen-coaching",
+export const BERATUNG = {
+  path: "/8-wochen-beratung",
   label: "01 · Persönliche Begleitung",
   tag: "8 Wochen",
   title: "Deine Ernährung. Dein Weg.",
@@ -41,8 +41,8 @@ export const COACHING = {
     "Persönliche Abschlussübersicht",
   ],
   price: { amount: "449 €", note: "Gesamtpreis für 8 Wochen" } as Price,
-  intro: COACHING_INTRO,
-  topic: "die 8-Wochen-Begleitung",
+  intro: BERATUNG_INTRO,
+  topic: "die 8-Wochen-Beratung",
 };
 
 export const EINZELBERATUNG = {
@@ -74,7 +74,7 @@ export const ZUSAMMENARBEIT_STEPS = [
   },
 ];
 
-export const COACHING_STEPS = [
+export const BERATUNG_STEPS = [
   {
     title: "Wir lernen uns kennen",
     text: "Im ausführlichen Erstgespräch schauen wir auf deine aktuelle Ernährung, deinen Alltag und deine Ziele. Gemeinsam legen wir fest, woran du arbeiten möchtest.",

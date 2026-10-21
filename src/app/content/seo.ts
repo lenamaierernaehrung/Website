@@ -27,8 +27,8 @@ const pages: PageMeta[] = [
     sitemap: true,
   },
   {
-    path: "/8-wochen-coaching",
-    title: "8 Wochen Ernährungsbegleitung online | Lena Maier",
+    path: "/8-wochen-beratung",
+    title: "8-Wochen-Ernährungsberatung online | Lena Maier",
     description:
       "Acht Wochen persönliche Begleitung online: fünf Videogespräche, Unterstützung zwischen den Terminen und eine Abschlussübersicht. Ohne starre Pläne und Verbote.",
     sitemap: true,

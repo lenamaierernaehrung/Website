@@ -142,7 +142,7 @@ function Paragraph1() {
       <div className="[word-break:break-word] absolute font-['Arsenal:Regular',sans-serif] h-[447px] leading-[0] left-[0.5px] not-italic text-[#f4f4f4] text-[18px] top-0 w-[430px] whitespace-pre-wrap">
         <p className="leading-[28px] mb-0">Zertifizierte Ernährungsberaterin mit Fokus auf alltagstaugliche Ernährung die Dich an Dein Ziel bringt.</p>
         <p className="leading-[28px] mb-0">​</p>
-        <p className="leading-[28px] mb-0">Ich arbeite im 1:1 Coaching sowie in Vorträgen und Workshops mit Schulen, Vereinen und Unternehmen. Weil Ernährung nicht nur privat, sondern auch im Arbeitsleben eine große Rolle spielt.</p>
+        <p className="leading-[28px] mb-0">Ich arbeite in der persönlichen Ernährungsberatung sowie in Vorträgen und Workshops mit Schulen, Vereinen und Unternehmen. Weil Ernährung nicht nur privat, sondern auch im Arbeitsleben eine große Rolle spielt.</p>
         <p className="leading-[28px] mb-0">Mein Ansatz ist klar: weniger Regeln, mehr Verständnis – und Entscheidungen, die im echten Leben funktionieren.</p>
         <p className="leading-[28px] mb-0">​</p>
         <p className="leading-[28px] mb-0">Ernährung muss nicht perfekt sein, sondern machbar. Und genau dort setze ich an.</p>

@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { F, G, GOLD, Reveal, TEXT } from "../components/shared";
 import { ArrowIcon, Pill, PriceBlock } from "../components/offer-ui";
-import { COACHING, EINZELBERATUNG } from "../content/angebote";
+import { BERATUNG, EINZELBERATUNG } from "../content/angebote";
 import { useGoToSection, usePageMeta } from "../navigation";
 import {
   DetailHero,
@@ -77,10 +77,10 @@ export function EinzelberatungPage() {
             Unterstützung bei der Veränderung deiner Gewohnheiten
             wünschst, könnte mein{" "}
             <Link
-              to={COACHING.path}
+              to={BERATUNG.path}
               style={{ color: GOLD, textDecoration: "underline", textUnderlineOffset: 3 }}
             >
-              8-Wochen-Coaching
+              8-Wochen-Beratung
             </Link>{" "}
             besser zu dir passen.
           </p>

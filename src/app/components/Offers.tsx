@@ -22,7 +22,7 @@ import {
 } from "./offer-ui";
 import { Timeline } from "./Timeline";
 import {
-  COACHING,
+  BERATUNG,
   EINZELBERATUNG,
   VORTRAEGE,
   ZUSAMMENARBEIT_STEPS,
@@ -166,15 +166,15 @@ export function Services() {
           <Reveal delay={0.1} className="h-full">
             <OfferCard
               featured
-              label={COACHING.label}
-              tag={COACHING.tag}
-              title={COACHING.title}
-              desc={COACHING.desc}
-              bullets={COACHING.bullets}
-              price={COACHING.price}
-              intro={COACHING.intro}
-              to={COACHING.path}
-              linkLabel="über das 8-Wochen-Coaching"
+              label={BERATUNG.label}
+              tag={BERATUNG.tag}
+              title={BERATUNG.title}
+              desc={BERATUNG.desc}
+              bullets={BERATUNG.bullets}
+              price={BERATUNG.price}
+              intro={BERATUNG.intro}
+              to={BERATUNG.path}
+              linkLabel="über die 8-Wochen-Beratung"
             />
           </Reveal>
           <Reveal delay={0.18} className="h-full">

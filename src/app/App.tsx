@@ -31,7 +31,7 @@ import {
   TEXT,
 } from "./components/shared";
 import { Services, Vortraege } from "./components/Offers";
-import { CoachingPage } from "./pages/CoachingPage";
+import { BeratungPage } from "./pages/BeratungPage";
 import { EinzelberatungPage } from "./pages/EinzelberatungPage";
 import { VortragPage } from "./pages/VortragPage";
 import {
@@ -1549,7 +1549,11 @@ const router = createBrowserRouter([
         element: <SiteLayout />,
         children: [
           { path: "/", element: <HomePage /> },
-          { path: "/8-wochen-coaching", element: <CoachingPage /> },
+          { path: "/8-wochen-beratung", element: <BeratungPage /> },
+          {
+            path: "/8-wochen-coaching",
+            element: <Navigate to="/8-wochen-beratung" replace />,
+          },
           { path: "/einzelberatung", element: <EinzelberatungPage /> },
           { path: "/vortraege/:slug", element: <VortragPage /> },
           { path: "/vortraege", element: <Navigate to="/#vortraege" replace /> },

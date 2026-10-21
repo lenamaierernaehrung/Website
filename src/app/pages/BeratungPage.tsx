@@ -1,7 +1,7 @@
 import { F, G, GOLD, Reveal, TEXT } from "../components/shared";
 import { ArrowIcon, FactList, Pill, PriceBlock } from "../components/offer-ui";
 import { Timeline } from "../components/Timeline";
-import { COACHING, COACHING_STEPS } from "../content/angebote";
+import { BERATUNG, BERATUNG_STEPS } from "../content/angebote";
 import { useGoToSection, usePageMeta } from "../navigation";
 import {
   DetailHero,
@@ -49,7 +49,7 @@ const KENNENLERNEN = [
   "Wir sprechen etwa 15 Minuten über dein Anliegen.",
 ];
 
-export function CoachingPage() {
+export function BeratungPage() {
   usePageMeta();
   const goTo = useGoToSection();
 
@@ -57,9 +57,9 @@ export function CoachingPage() {
     <main>
       <DetailHero
         back={{ to: "/#services", label: "Zur Angebotsübersicht" }}
-        eyebrow="Persönliches Coaching · 8 Wochen"
-        title={COACHING.title}
-        subtitle="8 Wochen persönliches Online-Ernährungscoaching"
+        eyebrow="Persönliche Ernährungsberatung · 8 Wochen"
+        title={BERATUNG.title}
+        subtitle="8 Wochen persönliche Online-Ernährungsberatung"
       >
         <p style={bodyStyle}>
           Du möchtest deine Ernährung langfristig verändern, dein
@@ -67,7 +67,7 @@ export function CoachingPage() {
           deinen Ernährungsentscheidungen gewinnen?
         </p>
         <p style={bodyStyle}>
-          In meinem 8-Wochen-Coaching begleite ich dich persönlich.
+          In meiner 8-Wochen-Beratung begleite ich dich persönlich.
           Gemeinsam schauen wir auf deine bisherigen Gewohnheiten,
           entwickeln individuelle Strategien und finden Lösungen, die
           zu deinem Alltag passen.
@@ -102,24 +102,24 @@ export function CoachingPage() {
 
       <DetailSection
         label="Ablauf"
-        heading="So läuft dein Coaching ab"
+        heading="So läuft deine Beratung ab"
         gradient={G.philosophy}
       >
-        <Timeline steps={COACHING_STEPS} />
+        <Timeline steps={BERATUNG_STEPS} />
       </DetailSection>
 
       <section
-        id="coaching-anfragen"
+        id="beratung-anfragen"
         style={{ backgroundImage: G.services }}
         className="py-20 md:py-28"
       >
         <div className="mx-auto w-full px-4 sm:px-6 lg:px-8" style={{ maxWidth: 960 }}>
           <RequestPanel
-            heading="Du möchtest herausfinden, ob das Coaching zu dir passt?"
+            heading="Du möchtest herausfinden, ob die Beratung zu dir passt?"
             aside={
               <>
                 {/* the intro offer carries its own label */}
-                {!COACHING.intro && (
+                {!BERATUNG.intro && (
                   <p
                     className="mb-5"
                     style={{
@@ -133,7 +133,7 @@ export function CoachingPage() {
                     Preis
                   </p>
                 )}
-                <PriceBlock price={COACHING.price} intro={COACHING.intro} large />
+                <PriceBlock price={BERATUNG.price} intro={BERATUNG.intro} large />
               </>
             }
           >
@@ -168,10 +168,10 @@ export function CoachingPage() {
               ))}
             </ol>
             <Pill
-              onClick={() => goTo("contact", COACHING.topic)}
+              onClick={() => goTo("contact", BERATUNG.topic)}
               className="w-full sm:w-fit"
             >
-              Coaching anfragen
+              Beratung anfragen
               <ArrowIcon />
             </Pill>
           </RequestPanel>
