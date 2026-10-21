@@ -29,7 +29,7 @@ export const COACHING_INTRO: IntroOffer | null = {
 };
 
 export const COACHING = {
-  path: "/8-wochen-begleitung",
+  path: "/8-wochen-coaching",
   label: "01 · Persönliche Begleitung",
   tag: "8 Wochen",
   title: "Deine Ernährung. Dein Weg.",
