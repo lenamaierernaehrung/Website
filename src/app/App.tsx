@@ -1,356 +1,45 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { MotionConfig, motion } from "motion/react";
 import { Analytics } from "@vercel/analytics/react";
+import {
+  Link,
+  Navigate,
+  Outlet,
+  RouterProvider,
+  ScrollRestoration,
+  createBrowserRouter,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import svgPaths from "@/imports/ErnahrungsberatungLenaMaier/svg-rf8dr8pybf";
 import svgScroll from "@/imports/ScrollIndicator/svg-axvrxmtrd7";
 import imgLenaMaier from "@/imports/ErnahrungsberatungLenaMaier/d5d32fa9064166e615e6332edb6bc5c225bc6936.png";
-
-// ── Design tokens ─────────────────────────────────────────────────
-const GOLD = "#c9a66b";
-const GOLD_LITE = "#ffe5c5";
-const TEXT = "#f4f4f4";
-const CARD_BG = "rgba(75,67,65,0.85)";
-const CARD_DARK = "#282423";
-
-// Each gradient starts where the previous one ended — no seams.
-// Dark = rgb(43,38,37)  |  Medium = rgb(90,80,78)
-const G = {
-  hero: "linear-gradient(180deg, rgb(43,38,37) 0%, rgb(90,80,78) 100%)",
-  about:
-    "linear-gradient(180deg, rgb(90,80,78) 0%, rgb(43,38,37) 100%)",
-  philosophy:
-    "linear-gradient(180deg, rgb(43,38,37) 0%, rgb(90,80,78) 100%)",
-  services:
-    "linear-gradient(180deg, rgb(90,80,78) 0%, rgb(43,38,37) 100%)",
-  why: "linear-gradient(180deg, rgb(43,38,37) 0%, rgb(90,80,78) 100%)",
-  contact:
-    "linear-gradient(180deg, rgb(90,80,78) 0%, rgb(43,38,37) 100%)",
-  footer:
-    "linear-gradient(180deg, rgb(43,38,37) 0%, rgb(90,80,78) 100%)",
-};
-
-// Shared font families
-const F = {
-  heading: "Montserrat, sans-serif",
-  body: "Arsenal, sans-serif",
-  sc: "'Arsenal SC', sans-serif",
-};
-
-// ── Container ────────────────────────────────────────────────────
-function Container({
-  children,
-  className = "",
-  narrow = false,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  narrow?: boolean;
-}) {
-  return (
-    <div
-      className={`mx-auto w-full px-4 sm:px-6 lg:px-8 ${className}`}
-      style={{ maxWidth: narrow ? 800 : 1120 }}
-    >
-      {children}
-    </div>
-  );
-}
-
-// ── Reveal animation ─────────────────────────────────────────────
-function Reveal({
-  children,
-  delay = 0,
-  className = "",
-  style,
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-48px" }}
-      transition={{
-        duration: 0.65,
-        ease: [0.16, 1, 0.3, 1],
-        delay,
-      }}
-      className={className}
-      style={style}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-// ── Gold divider ─────────────────────────────────────────────────
-function GoldLine({ className = "" }: { className?: string }) {
-  return (
-    <div className={`flex items-center gap-4 ${className}`}>
-      <div
-        style={{
-          flex: 1,
-          height: 1,
-          background: `linear-gradient(90deg, transparent, ${GOLD}40)`,
-        }}
-      />
-      <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-        <rect
-          x="1.5"
-          y="1.5"
-          width="5"
-          height="5"
-          rx="1"
-          fill={GOLD}
-          opacity="0.6"
-        />
-      </svg>
-      <div
-        style={{
-          flex: 1,
-          height: 1,
-          background: `linear-gradient(90deg, ${GOLD}40, transparent)`,
-        }}
-      />
-    </div>
-  );
-}
-
-// ── Section label ────────────────────────────────────────────────
-function SectionLabel({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <p
-      className="uppercase tracking-[0.18em] mb-4"
-      style={{
-        fontFamily: F.sc,
-        fontSize: 11,
-        color: GOLD,
-        letterSpacing: "0.18em",
-      }}
-    >
-      {children}
-    </p>
-  );
-}
-
-// ── Section heading ──────────────────────────────────────────────
-function SectionHeading({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <h2
-      className={`font-semibold leading-[1.18] ${className}`}
-      style={{
-        fontFamily: F.heading,
-        fontSize: "clamp(1.625rem, 3.5vw, 2.5rem)",
-        color: TEXT,
-      }}
-    >
-      {children}
-    </h2>
-  );
-}
-
-// ── Leaf logo ────────────────────────────────────────────────────
-function LeafLogo({ size = 40 }: { size?: number }) {
-  return (
-    <div
-      style={{
-        position: "relative",
-        width: size,
-        height: Math.round(size * 1.17),
-        flexShrink: 0,
-      }}
-    >
-      <svg
-        style={{
-          position: "absolute",
-          left: size * 0.19,
-          top: size * 0.095,
-          width: size * 0.634,
-          height: size * 0.966,
-        }}
-        fill="none"
-        viewBox="0 0 26.6357 40.5566"
-      >
-        <defs>
-          <linearGradient
-            id="leafGrad"
-            x1="15.6122"
-            x2="3.95475"
-            y1="-1.9017"
-            y2="39.0019"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#FFE5C5" />
-            <stop offset="1" stopColor="#E2B578" />
-          </linearGradient>
-        </defs>
-        <path d={svgPaths.p346db880} fill="url(#leafGrad)" />
-      </svg>
-    </div>
-  );
-}
-
-// ── Primary button ───────────────────────────────────────────────
-function PrimaryBtn({
-  children,
-  onClick,
-  full = false,
-}: {
-  children: React.ReactNode;
-  onClick?: () => void;
-  full?: boolean;
-}) {
-  return (
-    <motion.button
-      onClick={onClick}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
-      className={`inline-flex items-center justify-center gap-3 rounded-full cursor-pointer min-h-[52px] ${full ? "w-full" : ""} px-[8px] py-[0px] mx-[10px] my-[0px]`}
-      style={{
-        background: `linear-gradient(135deg, ${GOLD}55 0%, ${GOLD}25 100%)`,
-        border: `1px solid ${GOLD}80`,
-      }}
-    >
-      {children}
-    </motion.button>
-  );
-}
-
-// ── Ghost button ─────────────────────────────────────────────────
-function GhostBtn({
-  children,
-  onClick,
-  full = false,
-}: {
-  children: React.ReactNode;
-  onClick?: () => void;
-  full?: boolean;
-}) {
-  return (
-    <motion.button
-      onClick={onClick}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
-      className={`inline-flex items-center justify-center gap-3 rounded-full cursor-pointer min-h-[52px] px-7 ${full ? "w-full" : ""}`}
-      style={{
-        background: "transparent",
-        border: `1px solid rgba(244,244,244,0.3)`,
-      }}
-    >
-      {children}
-    </motion.button>
-  );
-}
-
-// ── Feature card ─────────────────────────────────────────────────
-function FeatureCard({
-  title,
-  body,
-  icon,
-}: {
-  title: string;
-  body: string;
-  icon?: React.ReactNode;
-}) {
-  return (
-    <div
-      className="rounded-2xl p-7 h-full flex flex-col gap-4"
-      style={{
-        background: CARD_BG,
-        border: `1px solid ${GOLD}55`,
-      }}
-    >
-      {icon && (
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{ background: `${GOLD}18` }}
-        >
-          {icon}
-        </div>
-      )}
-      <h3
-        className="font-semibold leading-snug"
-        style={{
-          fontFamily: F.heading,
-          fontSize: "clamp(0.9375rem,1.5vw,1.125rem)",
-          color: TEXT,
-        }}
-      >
-        {title}
-      </h3>
-      <p
-        className="leading-relaxed flex-1"
-        style={{
-          fontFamily: F.body,
-          fontSize: "clamp(0.875rem,1.1vw,0.9375rem)",
-          color: TEXT,
-          opacity: 0.85,
-        }}
-      >
-        {body}
-      </p>
-    </div>
-  );
-}
-
-// ── Service feature row ──────────────────────────────────────────
-function ServiceFeature({
-  icon,
-  title,
-  desc,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <div className="flex gap-4 items-start">
-      <div
-        className="shrink-0 w-9 h-9 rounded-[10px] flex items-center justify-center mt-0.5"
-        style={{ background: `${GOLD}18` }}
-      >
-        {icon}
-      </div>
-      <div className="flex flex-col gap-0.5">
-        <p
-          className="font-medium"
-          style={{
-            fontFamily: F.body,
-            fontSize: "clamp(0.9375rem,1.2vw,1rem)",
-            color: TEXT,
-            lineHeight: 1.5,
-          }}
-        >
-          {title}
-        </p>
-        <p
-          style={{
-            fontFamily: F.body,
-            fontSize: "clamp(0.8125rem,1vw,0.875rem)",
-            color: TEXT,
-            opacity: 0.7,
-            lineHeight: 1.55,
-          }}
-        >
-          {desc}
-        </p>
-      </div>
-    </div>
-  );
-}
+import {
+  CARD_DARK,
+  Container,
+  F,
+  FeatureCard,
+  G,
+  GOLD,
+  GOLD_LITE,
+  GhostBtn,
+  GoldLine,
+  LeafLogo,
+  PrimaryBtn,
+  Reveal,
+  SectionHeading,
+  SectionLabel,
+  TEXT,
+} from "./components/shared";
+import { Services, Vortraege } from "./components/Offers";
+import { CoachingPage } from "./pages/CoachingPage";
+import { EinzelberatungPage } from "./pages/EinzelberatungPage";
+import { VortragPage } from "./pages/VortragPage";
+import {
+  useGoToSection,
+  usePageMeta,
+  type ContactState,
+} from "./navigation";
 
 // ────────────────────────────────────────────────────────────────
 // NAV
@@ -364,6 +53,17 @@ function Nav({
   const [menuOpen, setMenuOpen] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
   const lastScrollY = useRef(0);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
@@ -414,6 +114,7 @@ function Nav({
   const links = [
     { label: "Über mich", id: "about" },
     { label: "Angebot", id: "services" },
+    { label: "Vorträge", id: "vortraege" },
     { label: "Kontakt", id: "contact" },
   ];
 
@@ -446,7 +147,9 @@ function Nav({
         >
           <button
             onClick={() => {
-              window.scrollTo({ top: 0, behavior: "smooth" });
+              if (pathname === "/")
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              else navigate("/");
               setMenuOpen(false);
             }}
             className="flex items-center gap-2.5 focus:outline-none"
@@ -456,7 +159,7 @@ function Nav({
           </button>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden md:flex items-center gap-7 lg:gap-10">
             {links.map((l) => (
               <NavLink
                 key={l.id}
@@ -488,6 +191,8 @@ function Nav({
             aria-label={
               menuOpen ? "Menü schließen" : "Menü öffnen"
             }
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
             <span
               className="block h-[1.5px] w-5 transition-all duration-300 origin-center rounded-full"
@@ -520,13 +225,15 @@ function Nav({
 
       {/* Mobile menu */}
       <div
+        id="mobile-menu"
         className="fixed inset-0 z-40 md:hidden"
         style={{
           opacity: menuOpen ? 1 : 0,
+          visibility: menuOpen ? "visible" : "hidden",
           pointerEvents: menuOpen ? "all" : "none",
           background: "rgba(35,30,29,0.97)",
           backdropFilter: "blur(24px)",
-          transition: "opacity 0.35s ease",
+          transition: `opacity 0.35s ease, visibility 0s linear ${menuOpen ? "0s" : "0.35s"}`,
         }}
       >
         <div className="flex flex-col items-center justify-center h-full gap-8">
@@ -543,7 +250,7 @@ function Nav({
                 onScrollTo(l.id);
                 setMenuOpen(false);
               }}
-              className="text-2xl tracking-wide transition-colors duration-200"
+              className="text-2xl tracking-wide transition-colors duration-200 min-h-[48px] px-4"
               style={{
                 fontFamily: F.body,
                 color: TEXT,
@@ -561,7 +268,7 @@ function Nav({
               opacity: menuOpen ? 1 : 0,
               y: menuOpen ? 0 : 16,
             }}
-            transition={{ delay: 0.21, duration: 0.4 }}
+            transition={{ delay: 0.28, duration: 0.4 }}
             onClick={() => {
               onScrollTo("contact");
               setMenuOpen(false);
@@ -575,7 +282,7 @@ function Nav({
               color: TEXT,
             }}
           >
-            Erstgespräch buchen
+            Erstgespräch vereinbaren
           </motion.button>
         </div>
       </div>
@@ -654,18 +361,17 @@ function Hero({
     >
       <div style={{ maxWidth: 680, width: "100%" }}>
         <Reveal>
+          {/* Wraps on small screens (see .hero-tagline in globals.css) */}
           <p
-            className="mb-8 uppercase"
+            className="hero-tagline mb-8 uppercase"
             style={{
               fontFamily: F.sc,
-              fontSize: "clamp(0.45rem, 3vw, 0.8125rem)",
               color: GOLD,
-              whiteSpace: "nowrap",
-              letterSpacing: "clamp(0.04em, 0.18em, 0.18em)",
             }}
           >
-            individuell · alltagstauglich · wissenschaftlich
-            fundiert
+            {/* non-breaking space keeps each "·" with the word before it */}
+            individuell{"\u00A0"}· alltagstauglich{"\u00A0"}·
+            wissenschaftlich fundiert
           </p>
         </Reveal>
 
@@ -674,7 +380,11 @@ function Hero({
             className="font-bold uppercase mb-2 leading-[1.1] w-full"
             style={{
               fontFamily: F.heading,
-              fontSize: "clamp(1.5rem, 5.5vw, 3rem)",
+              // Same size as before wherever the word fits; below
+              // ~430px it scales down so "Ernährungsberatung" stays
+              // inside the viewport.
+              fontSize:
+                "clamp(1.15rem, min(6.1vw, max(1.5rem, 5.5vw)), 3rem)",
               color: TEXT,
               letterSpacing: "0.025em",
               wordBreak: "keep-all",
@@ -1038,406 +748,6 @@ function Philosophy() {
   );
 }
 
-// ────────────────────────────────────────────────────────────────
-// SERVICES
-// ────────────────────────────────────────────────────────────────
-function Services({
-  onOpenPrivat,
-  onOpenOrg,
-}: {
-  onOpenPrivat: () => void;
-  onOpenOrg: () => void;
-}) {
-  const personal = [
-    {
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-            fill={GOLD}
-          />
-        </svg>
-      ),
-      title: "Gesund für die Familie",
-      desc: "Beratung für groß und klein, weil gesunde Ernährung Familiensache ist",
-    },
-    {
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 23 23"
-          fill="none"
-        >
-          <path d={svgPaths.p16288100} fill={GOLD} />
-        </svg>
-      ),
-      title: "Nachhaltiger Fettverlust",
-      desc: "Ohne Jojo-Effekt und Extremdiäten zu deinem Wunschgewicht",
-    },
-    {
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 20 20"
-          fill="none"
-        >
-          <circle
-            cx="10"
-            cy="10"
-            r="9"
-            stroke={GOLD}
-            strokeWidth="1.67"
-          />
-          <path
-            d="M10 5.5V10L12.5 12.5"
-            stroke={GOLD}
-            strokeWidth="1.67"
-            strokeLinecap="round"
-          />
-        </svg>
-      ),
-      title: "Langfristige Begleitung",
-      desc: "Kontinuierliche Unterstützung auf deinem Weg",
-    },
-  ];
-
-  const orgs = [
-    {
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"
-            fill={GOLD}
-          />
-        </svg>
-      ),
-      title: "Für Unternehmen",
-      desc: "Gesunde Ernährung am Arbeitsplatz – für mehr Energie und Leistungsfähigkeit",
-    },
-    {
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M12 3L1 9l4 2.18V15h2v-2.82L9 13.36V17c0 1.1 1.35 2 3 2s3-.9 3-2v-3.64l6-3.28L12 3zm5 12.99l2 .01v2l-2-.01v-2.01zM4 19v2H2v-2h2z"
-            fill={GOLD}
-          />
-        </svg>
-      ),
-      title: "Für Schulen",
-      desc: "Altersgerechte Vermittlung von Ernährungswissen für Schüler und Eltern",
-    },
-    {
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
-            fill={GOLD}
-          />
-        </svg>
-      ),
-      title: "Für Vereine",
-      desc: "Sportgerechte Ernährung für optimale Performance und Regeneration",
-    },
-  ];
-
-  function ServiceCard({
-    badge,
-    title,
-    desc,
-    features,
-    accent,
-    onMoreClick,
-  }: {
-    badge: string;
-    title: string;
-    desc: string;
-    features: {
-      icon: React.ReactNode;
-      title: string;
-      desc: string;
-    }[];
-    accent: string;
-    onMoreClick: () => void;
-  }) {
-    const [hovered, setHovered] = useState(false);
-    return (
-      <div
-        className="rounded-2xl p-7 md:p-9 flex flex-col h-full"
-        style={{
-          background: CARD_BG,
-          border: `1px solid ${GOLD_LITE}35`,
-        }}
-      >
-        <span
-          className="inline-block mb-5"
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontSize: 11,
-            color: GOLD,
-            fontWeight: 500,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-          }}
-        >
-          {badge}
-        </span>
-        <h3
-          className="font-semibold mb-3 leading-snug"
-          style={{
-            fontFamily: F.heading,
-            fontSize: "clamp(1.1875rem,2vw,1.5rem)",
-            color: TEXT,
-          }}
-        >
-          {title}
-        </h3>
-        <p
-          className="mb-8 leading-relaxed"
-          style={{
-            fontFamily: F.body,
-            fontSize: "clamp(0.875rem,1.2vw,0.9375rem)",
-            color: TEXT,
-            opacity: 0.8,
-          }}
-        >
-          {desc}
-        </p>
-        <div className="flex flex-col gap-5">
-          {features.map((f, i) => (
-            <ServiceFeature key={i} {...f} />
-          ))}
-        </div>
-        <button
-          onClick={onMoreClick}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          className="mt-8 flex items-center gap-2 focus:outline-none w-fit"
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontFamily: F.body,
-            fontSize: 15,
-            color: hovered ? GOLD_LITE : GOLD,
-            transition: "color .2s",
-          }}
-        >
-          Mehr erfahren
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            style={{
-              transform: hovered
-                ? "translateX(3px)"
-                : "translateX(0)",
-              transition: "transform .2s",
-            }}
-          >
-            <path
-              d="M2.5 7h9M7.5 3.5L11 7l-3.5 3.5"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <section
-      id="services"
-      style={{ backgroundImage: G.services }}
-      className="py-0 md:pt-8 md:pb-32 scroll-mt-[90px]"
-    >
-      <Container>
-        <Reveal className="text-center mb-4">
-          <SectionLabel>Angebot</SectionLabel>
-          <SectionHeading>Meine Leistungen</SectionHeading>
-        </Reveal>
-        <Reveal delay={0.06} className="text-center mb-14">
-          <p
-            className="mx-auto leading-relaxed"
-            style={{
-              fontFamily: F.body,
-              fontSize: "clamp(0.9375rem,1.3vw,1.0625rem)",
-              color: TEXT,
-              opacity: 0.8,
-              maxWidth: 560,
-            }}
-          >
-            Einzelberatung und Gruppenvorträge für eine
-            Ernährung, die auch im stressigen Alltag
-            funktioniert
-          </p>
-        </Reveal>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Reveal delay={0.1}>
-            <ServiceCard
-              badge="Privatpersonen"
-              title="Persönliche Beratung"
-              desc="Individuell auf dich abgestimmt. Wir entwickeln gemeinsam einen Plan, der zu deinem Leben, deinen Zielen und deinen Vorlieben passt."
-              features={personal}
-              accent={GOLD}
-              onMoreClick={onOpenPrivat}
-            />
-          </Reveal>
-          <Reveal delay={0.18}>
-            <ServiceCard
-              badge="Organisationen"
-              title="Vorträge"
-              desc="Fundiertes Ernährungswissen für Vereine, Schulen und Unternehmen. Praxisnah, wissenschaftlich fundiert und sofort anwendbar."
-              features={orgs}
-              accent={GOLD}
-              onMoreClick={onOpenOrg}
-            />
-          </Reveal>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-// ────────────────────────────────────────────────────────────────
-// WHY IT WORKS
-// ────────────────────────────────────────────────────────────────
-function WhyItWorks() {
-  const cards = [
-    {
-      title: "Individuelle Anpassung",
-      body: "Dein Plan passt sich deinem Leben an – nicht umgekehrt. Wir berücksichtigen deine Vorlieben, deinen Alltag und deine Ziele.",
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-            fill={GOLD}
-          />
-        </svg>
-      ),
-    },
-    {
-      title: "Langfristige Perspektive",
-      body: "Keine Crash-Diäten. Ich arbeite mit dir an kleinen Veränderungen, die ein Leben lang bleiben.",
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"
-            fill={GOLD}
-          />
-        </svg>
-      ),
-    },
-    {
-      title: "Persönliche Begleitung",
-      body: "Du bist nicht allein. Ich begleite dich Schritt für Schritt und bin bei Fragen und Herausforderungen für dich da.",
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-            fill={GOLD}
-          />
-        </svg>
-      ),
-    },
-    {
-      title: "Ohne Verzicht",
-      body: "Essen soll Freude machen. Wir finden Wege, wie du geniessen und gleichzeitig deine Ziele erreichen kannst.",
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M18.06 23H19.72C20.56 23 21.25 22.35 21.35 21.53L23 5.05H18V1H16.03V5.05H11.06L11.36 7.39C13.07 7.86 14.67 8.71 15.63 9.65C17.07 11.07 18.06 12.54 18.06 14.94V23ZM1 22V21H16.03V22C16.03 22.54 15.58 23 15 23H2C1.45 23 1 22.54 1 22ZM16.03 15C16.03 7 1 7 1 15H16.03ZM1 17H16V19H1V17Z"
-            fill={GOLD}
-          />
-        </svg>
-      ),
-    },
-  ];
-
-  return (
-    <section
-      style={{ backgroundImage: G.why }}
-      className="py-24 md:py-32"
-    >
-      <Container>
-        <Reveal className="text-center mb-4">
-          <SectionLabel>Methode</SectionLabel>
-          <SectionHeading>Was dich erwartet</SectionHeading>
-        </Reveal>
-        <Reveal delay={0.06} className="text-center mb-14">
-          <p
-            style={{
-              fontFamily: F.body,
-              fontSize: "clamp(0.9375rem,1.3vw,1.0625rem)",
-              color: TEXT,
-              opacity: 0.8,
-            }}
-          >
-            Ein ganzheitlicher Ansatz für bleibende Veränderung
-          </p>
-        </Reveal>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {cards.map((c, i) => (
-            <Reveal key={i} delay={i * 0.08}>
-              <FeatureCard
-                title={c.title}
-                body={c.body}
-                icon={c.icon}
-              />
-            </Reveal>
-          ))}
-        </div>
-      </Container>
-    </section>
-  );
-}
 
 // ────────────────────────────────────────────────────────────────
 // CONTACT
@@ -1445,6 +755,13 @@ function WhyItWorks() {
 function Contact() {
   const [copied, setCopied] = useState(false);
   const email = "kontakt@lenamaier-ernaehrung.de";
+  // Coming from a detail page: name the chosen offer in the WhatsApp draft
+  const topic = (useLocation().state as ContactState)?.topic;
+  const whatsappUrl = topic
+    ? `https://wa.me/4915732419806?text=${encodeURIComponent(
+        `Hallo Lena, ich interessiere mich für ${topic}.`,
+      )}`
+    : "https://wa.me/4915732419806";
 
   const copy = async () => {
     try {
@@ -1514,7 +831,7 @@ function Contact() {
                 <PrimaryBtn
                   onClick={() =>
                     window.open(
-                      "https://wa.me/4915732419806",
+                      whatsappUrl,
                       "_blank",
                       "noopener,noreferrer",
                     )
@@ -1709,11 +1026,9 @@ function Contact() {
 // ────────────────────────────────────────────────────────────────
 // FOOTER
 // ────────────────────────────────────────────────────────────────
-function Footer({
-  onOpenLegal,
-}: {
-  onOpenLegal: (id: LegalOnlyId) => void;
-}) {
+function Footer() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   return (
     <footer style={{ backgroundImage: G.footer }}>
       <div style={{ borderTop: `2px solid ${GOLD_LITE}40` }}>
@@ -1723,8 +1038,11 @@ function Footer({
             {/* Brand — centered on mobile */}
             <button
               onClick={() =>
-                window.scrollTo({ top: 0, behavior: "smooth" })
+                pathname === "/"
+                  ? window.scrollTo({ top: 0, behavior: "smooth" })
+                  : navigate("/")
               }
+              aria-label="Zur Startseite"
               className="focus:outline-none w-fit text-center mx-auto"
             >
               <p
@@ -1819,7 +1137,7 @@ function Footer({
             >
               Rechtliches
             </p>
-            <div className="flex flex-col gap-2 items-center">
+            <div className="flex flex-col gap-0.5 items-center">
               {(
                 [
                   ["Impressum", "impressum"],
@@ -1827,9 +1145,10 @@ function Footer({
                   ["AGB", "agb"],
                 ] as [string, LegalOnlyId][]
               ).map(([label, id]) => (
-                <a
+                <Link
                   key={id}
-                  href="#"
+                  to={`/${id}`}
+                  className="py-1.5 px-2"
                   style={{
                     fontFamily: F.body,
                     fontSize: 15,
@@ -1843,13 +1162,9 @@ function Footer({
                   onMouseLeave={(e) =>
                     (e.currentTarget.style.opacity = "0.85")
                   }
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onOpenLegal(id);
-                  }}
                 >
                   {label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -1905,809 +1220,11 @@ function Footer({
   );
 }
 
-// ────────────────────────────────────────────────────────────────
-// SUBPAGE SHELL (shared back-bar + scroll container)
-// ────────────────────────────────────────────────────────────────
-function SubPageShell({
-  onBack,
-  children,
-}: {
-  onBack: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 500,
-        overflowY: "auto",
-        background: "rgb(43,38,37)",
-      }}
-    >
-      <style>{`*, *::before, *::after { box-sizing: border-box; } body { margin: 0; } button { cursor: pointer; } button:hover, a:hover { transform: scale(1.03); } button, a { transition: transform 0.18s cubic-bezier(0.16,1,0.3,1); }`}</style>
-      <div
-        className="sticky top-0 z-50"
-        style={{
-          background: "rgba(35,30,29,0.96)",
-          backdropFilter: "blur(20px)",
-          borderBottom: `1px solid ${GOLD}22`,
-        }}
-      >
-        <div
-          className="flex items-center gap-4 px-4 sm:px-6 lg:px-10"
-          style={{
-            maxWidth: 1120,
-            margin: "0 auto",
-            height: 64,
-          }}
-        >
-          <button
-            onClick={onBack}
-            className="flex items-center gap-2 focus:outline-none"
-            style={{
-              background: "none",
-              border: "none",
-              color: TEXT,
-              fontFamily: F.body,
-              fontSize: 15,
-              opacity: 0.85,
-              cursor: "pointer",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.opacity = "1")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.opacity = "0.85")
-            }
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-            >
-              <path
-                d="M12.5 4.5L7 10l5.5 5.5"
-                stroke={TEXT}
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Zurück
-          </button>
-        </div>
-      </div>
-      {children}
-    </div>
-  );
-}
-
-// ────────────────────────────────────────────────────────────────
-// SHARED SUBPAGE OFFER CARD
-// ────────────────────────────────────────────────────────────────
-function OfferCard({
-  icon,
-  title,
-  subtitle,
-  bullets,
-  scope,
-  price,
-  onContact,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  subtitle?: string;
-  bullets: string[];
-  scope: string[];
-  price: string;
-  onContact: () => void;
-}) {
-  return (
-    <div
-      className="rounded-3xl flex flex-col h-full"
-      style={{
-        background: CARD_BG,
-        border: `1px solid ${GOLD}40`,
-      }}
-    >
-      <div className="p-7 md:p-9 flex flex-col gap-5 flex-1">
-        <div>
-          <h2
-            className="font-semibold leading-snug mb-1"
-            style={{
-              fontFamily: F.heading,
-              fontSize: "clamp(1.1875rem,2vw,1.5rem)",
-              color: TEXT,
-            }}
-          >
-            {title}
-          </h2>
-          {subtitle && (
-            <p
-              className="leading-relaxed"
-              style={{
-                fontFamily: F.body,
-                fontSize: "clamp(0.875rem,1.1vw,0.9375rem)",
-                color: TEXT,
-                opacity: 0.65,
-              }}
-            >
-              {subtitle}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-col gap-2.5">
-          {bullets.map((b, i) => (
-            <div key={i} className="flex items-start gap-3">
-              <svg
-                className="shrink-0 mt-0.5"
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-              >
-                <path
-                  d="M2 7.5l3.5 3.5L12 3"
-                  stroke={GOLD}
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span
-                style={{
-                  fontFamily: F.body,
-                  fontSize: "clamp(0.875rem,1.1vw,0.9375rem)",
-                  color: TEXT,
-                  opacity: 0.85,
-                  lineHeight: 1.5,
-                }}
-              >
-                {b}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div
-        className="mx-7 md:mx-9"
-        style={{ height: 1, background: `${GOLD}25` }}
-      />
-      <div className="p-7 md:p-9 flex flex-col gap-5">
-        <div>
-          <p
-            className="mb-3 uppercase"
-            style={{
-              fontFamily: F.heading,
-              fontWeight: 700,
-              fontSize: 11,
-              color: GOLD,
-              letterSpacing: "0.12em",
-            }}
-          >
-            Leistungsumfang
-          </p>
-          <div className="flex flex-col gap-2">
-            {scope.map((s, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-2.5"
-              >
-                <div
-                  className="w-1 h-1 rounded-full shrink-0"
-                  style={{ background: GOLD }}
-                />
-                <span
-                  style={{
-                    fontFamily: F.body,
-                    fontSize: "clamp(0.8125rem,1vw,0.875rem)",
-                    color: TEXT,
-                    opacity: 0.75,
-                  }}
-                >
-                  {s}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="flex items-end justify-between gap-4 flex-wrap">
-          <div>
-            <p
-              className="mb-0.5 uppercase"
-              style={{
-                fontFamily: F.heading,
-                fontWeight: 700,
-                fontSize: 11,
-                color: GOLD,
-                letterSpacing: "0.12em",
-              }}
-            >
-              Preis
-            </p>
-            <p
-              style={{
-                fontFamily: F.heading,
-                fontSize: "clamp(1rem,1.5vw,1.125rem)",
-                color: TEXT,
-                opacity: 0.85,
-              }}
-            >
-              {price}
-            </p>
-          </div>
-          <motion.button
-            onClick={onContact}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 rounded-full px-5 min-h-[42px] cursor-pointer shrink-0"
-            style={{
-              background: `${GOLD}25`,
-              border: `1px solid ${GOLD}60`,
-              fontFamily: F.sc,
-              fontSize: "clamp(0.75rem,1vw,0.875rem)",
-              color: TEXT,
-            }}
-          >
-            Anfragen
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-            >
-              <path
-                d="M2 6h8M6.5 3l3 3-3 3"
-                stroke={TEXT}
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </motion.button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ────────────────────────────────────────────────────────────────
-// PRIVATPERSONEN PAGE
-// ────────────────────────────────────────────────────────────────
-function PrivatpersonenPage({
-  onBack,
-  onContact,
-}: {
-  onBack: () => void;
-  onContact: () => void;
-}) {
-  return (
-    <SubPageShell onBack={onBack}>
-      {/* Hero — compact */}
-      <section
-        style={{ backgroundImage: G.hero }}
-        className="flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-16 pb-20"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.6,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          style={{ maxWidth: 640 }}
-        >
-          <p
-            className="mb-4 uppercase tracking-[0.18em]"
-            style={{
-              fontFamily: F.sc,
-              fontSize: "clamp(0.6rem,1vw,0.75rem)",
-              color: GOLD,
-            }}
-          >
-            Ernährungsberatung · Privatpersonen
-          </p>
-          <h1
-            className="font-bold mb-4 leading-[1.1] whitespace-nowrap"
-            style={{
-              fontFamily: F.heading,
-              fontSize: "clamp(1.25rem,3.2vw,2.25rem)",
-              color: TEXT,
-            }}
-          >
-            Zwei Angebote. Ein Klares Ziel.
-          </h1>
-          <p
-            className="mb-8"
-            style={{
-              fontFamily: F.body,
-              fontSize: "clamp(0.9375rem,1.3vw,1.0625rem)",
-              color: TEXT,
-              opacity: 0.75,
-            }}
-          >
-            Endlich die Ernährungsweise finden, die in deinem Leben funktioniert!
-          </p>
-          <motion.button
-            onClick={onContact}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 rounded-full px-7 min-h-[48px] cursor-pointer"
-            style={{
-              background: `${GOLD}30`,
-              border: `1px solid ${GOLD}70`,
-              fontFamily: F.sc,
-              fontSize: "clamp(0.8125rem,1.1vw,0.9375rem)",
-              color: TEXT,
-            }}
-          >
-            Unverbindlich Kontakt aufnehmen
-          </motion.button>
-        </motion.div>
-      </section>
-
-      {/* Angebote */}
-      <section
-        style={{ backgroundImage: G.about }}
-        className="py-16 md:py-20"
-      >
-        <Container>
-          <Reveal className="mb-10 text-center">
-            <SectionLabel>Meine Angebote</SectionLabel>
-          </Reveal>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-            <Reveal delay={0.06} className="h-full">
-              <OfferCard
-                icon={
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                     <path
-            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
-            fill={GOLD}
-          />
-        </svg>
-                }
-                title="Gesund für die Familie"
-                subtitle="Gemeinsam gesunde Gewohnheiten aufbauen."
-                bullets={[
-                  "Ernährung der ganzen Familie – weils zusammen mehr Spaß macht",
-                  "Kinder lernen Essverhalten zuerst zuhause",
-                  "Kühlschrankcheck & Einkaufsgewohnheiten",
-                  "Praktische Essensplanung für den Alltag",
-                  "Kleine Veränderungen mit messbarer Wirkung",
-                  "Keine Verbote – Verständnis statt Regeln",
-                ]}
-                scope={[
-                  "Gemeinsamen Gespräch",
-                  "Hausbesuch auf Wunsch möglich",
-                ]}
-                price="50€ zzgl. Fahrtkosten – Erstgespräch kostenlos"
-                onContact={onContact}
-              />
-            </Reveal>
-            <Reveal delay={0.12} className="h-full">
-              <OfferCard
-                icon={
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.28L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5v-5l-2.28 2.28C7.06 18.04 6 15.12 6 12c0-4.08 3.05-7.44 7-7.93V2.05z"
-                      fill={GOLD}
-                    />
-                  </svg>
-                }
-                title="Ab zum Wunschgewicht!"
-                subtitle="Es müssen nicht immer nur die Anderen bleiben, die es schaffen."
-                bullets={[
-                  "Nachhaltige Gewichtsabnahme – endlich ohne Jojo-Effekt",
-                  "Keine unsinnigen Diäten, keine Verbote",
-                  "Gewohnheiten dauerhaft verändern",
-                ]}
-                scope={[
-                  "Mehrwöchige persönliche Begleitung",
-                  "Regelmäßige Beratungstermine",
-                  "Individueller Plan",
-                  "Begleitung per WhatsApp",
-                  "Anpassung bei Bedarf",
-                ]}
-                price="50€ pro Sitzung – Erstgespräch kostenlos"
-                onContact={onContact}
-              />
-            </Reveal>
-          </div>
-        </Container>
-      </section>
-
-      {/* CTA */}
-      <section
-        style={{ backgroundImage: G.contact }}
-        className="py-14"
-      >
-        <Container narrow>
-          <Reveal
-            className="flex flex-col sm:flex-row items-center justify-between gap-6 rounded-2xl px-8 py-7"
-            style={{
-              background: CARD_BG,
-              border: `1px solid ${GOLD}30`,
-            }}
-          >
-            <div>
-              <p
-                className="font-semibold mb-1"
-                style={{
-                  fontFamily: F.heading,
-                  fontSize: "clamp(1rem,1.6vw,1.25rem)",
-                  color: TEXT,
-                }}
-              >
-                Noch unsicher, welches Angebot passt?
-              </p>
-              <p
-                style={{
-                  fontFamily: F.body,
-                  fontSize: 15,
-                  color: TEXT,
-                  opacity: 0.65,
-                }}
-              >
-                Das erste Gespräch ist kostenlos und
-                unverbindlich.
-              </p>
-            </div>
-            <motion.button
-              onClick={onContact}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-full px-7 min-h-[48px] cursor-pointer shrink-0"
-              style={{
-                background: `linear-gradient(135deg, ${GOLD}55, ${GOLD}25)`,
-                border: `1px solid ${GOLD}80`,
-                fontFamily: F.sc,
-                fontSize: "clamp(0.8125rem,1.1vw,0.9375rem)",
-                color: TEXT,
-              }}
-            >
-              Kostenloses Erstgespräch
-            </motion.button>
-          </Reveal>
-        </Container>
-      </section>
-
-      <div
-        style={{
-          borderTop: `1px solid rgba(244,244,244,0.08)`,
-          background: "rgb(43,38,37)",
-        }}
-        className="py-5 text-center"
-      >
-        <p
-          style={{
-            fontFamily: F.body,
-            fontSize: 12,
-            color: TEXT,
-            opacity: 0.35,
-          }}
-        >
-          © 2026 Lena Maier · Ernährungsberatung
-        </p>
-      </div>
-    </SubPageShell>
-  );
-}
-
-// ────────────────────────────────────────────────────────────────
-// ORGANISATIONEN PAGE
-// ────────────────────────────────────────────────────────────────
-function OrganisationenPage({
-  onBack,
-  onContact,
-}: {
-  onBack: () => void;
-  onContact: () => void;
-}) {
-  const includes = [
-    "Alltagstaugliches Wissen statt Ernährungsmythen",
-    "Wissenschaftlich fundiert und verständlich erklärt",
-    "Praktische Tipps, die sich wirklich umsetzen lassen",
-    "Gesunde Gewohnheiten nachhaltig entwickeln",
-    "Mehr Sicherheit bei alltäglichen Ernährungsfragen",
-    "Impulse für einen gesünderen Lebensstil",
-  ];
-
-  return (
-    <SubPageShell onBack={onBack}>
-      {/* Hero */}
-      <section
-        style={{ backgroundImage: G.hero }}
-        className="flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-16 pb-20"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.6,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          style={{ maxWidth: 620 }}
-        >
-          <p
-            className="mb-4 uppercase tracking-[0.18em]"
-            style={{
-              fontFamily: F.sc,
-              fontSize: "clamp(0.6rem,1vw,0.75rem)",
-              color: GOLD,
-            }}
-          >
-            Ernährungsberatung · Organisationen
-          </p>
-          <h1
-            className="font-bold mb-4 leading-[1.1]"
-            style={{
-              fontFamily: F.heading,
-              fontSize: "clamp(1.625rem,4vw,2.5rem)",
-              color: TEXT,
-            }}
-          >
-            Ernährungswissen direkt in Ihr Team.
-          </h1>
-          <p
-            style={{
-              fontFamily: F.body,
-              fontSize: "clamp(0.9375rem,1.3vw,1.0625rem)",
-              color: TEXT,
-              opacity: 0.72,
-            }}
-          >
-            Ein kompakter Vortrag – praxisnah und sofort
-            umsetzbar.
-          </p>
-        </motion.div>
-      </section>
-
-      {/* Angebot */}
-      <section
-        style={{ backgroundImage: G.about }}
-        className="py-16 md:py-24"
-      >
-        <Container narrow>
-          <Reveal>
-            <div
-              className="rounded-3xl overflow-hidden"
-              style={{ border: `1px solid ${GOLD}40` }}
-            >
-              {/* Header */}
-              <div
-                className="px-8 py-8"
-                style={{
-                  background: `linear-gradient(135deg, ${GOLD}22, ${GOLD}08)`,
-                  borderBottom: `1px solid ${GOLD}30`,
-                }}
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div>
-                    <p
-                      className="uppercase tracking-[0.15em] mb-2"
-                      style={{
-                        fontFamily: F.sc,
-                        fontSize:
-                          "clamp(0.6rem,0.9vw,0.6875rem)",
-                        color: GOLD,
-                      }}
-                    >
-                      Vortrag
-                    </p>
-                    <h2
-                      className="font-bold leading-tight"
-                      style={{
-                        fontFamily: F.heading,
-                        fontSize:
-                          "clamp(1.25rem,2.5vw,1.75rem)",
-                        color: TEXT,
-                      }}
-                    >
-                      Auf Sie zugeschnittenes Ernährungswissen
-                    </h2>
-                    <p
-                      className="mt-1"
-                      style={{
-                        fontFamily: F.body,
-                        fontSize: 15,
-                        color: TEXT,
-                        opacity: 0.6,
-                      }}
-                    >
-                      60–90 Minuten · bei Ihnen vor Ort oder
-                      online
-                    </p>
-                  </div>
-                  <div className="sm:text-right shrink-0">
-                    <p
-                      style={{
-                        fontFamily: F.body,
-                        fontSize: 13,
-                        color: TEXT,
-                        opacity: 0.5,
-                      }}
-                    >
-                      Preis
-                    </p>
-                    <p
-                      className="font-bold"
-                      style={{
-                        fontFamily: F.heading,
-                        fontSize: "clamp(1.5rem,3vw,2rem)",
-                        color: GOLD,
-                      }}
-                    >
-                      auf Anfrage €
-                    </p>
-                    <p
-                      style={{
-                        fontFamily: F.body,
-                        fontSize: 13,
-                        color: TEXT,
-                        opacity: 0.45,
-                      }}
-                    >
-                      zzgl. MwSt.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Body */}
-              <div
-                className="px-8 py-8"
-                style={{ background: CARD_BG }}
-              >
-                <p
-                  className="mb-6"
-                  style={{
-                    fontFamily: F.body,
-                    fontSize: "clamp(0.9375rem,1.2vw,1rem)",
-                    color: TEXT,
-                    opacity: 0.8,
-                  }}
-                >
-                  Keine Organisation ist wie die andere. Deshalb
-                  wird jeder Vortrag individuell auf Ihre
-                  Wünsche, Ihre Zielgruppe und Ihre
-                  Rahmenbedingungen zugeschnitten – ganz gleich,
-                  ob Unternehmen, Schule, Verein oder andere
-                  Einrichtung.
-                </p>
-                <p
-                  className="mb-5 font-semibold"
-                  style={{
-                    fontFamily: F.heading,
-                    fontSize: 14,
-                    color: GOLD,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  Was die Teilnehmer mitnehmen
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-                  {includes.map((item, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-3"
-                    >
-                      <svg
-                        className="shrink-0"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M2 8.5l4 4L14 3"
-                          stroke={GOLD}
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      <span
-                        style={{
-                          fontFamily: F.body,
-                          fontSize:
-                            "clamp(0.875rem,1.1vw,0.9375rem)",
-                          color: TEXT,
-                          opacity: 0.85,
-                        }}
-                      >
-                        {item}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div
-                  style={{ borderTop: `1px solid ${GOLD}20` }}
-                  className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-                >
-                  <p
-                    style={{
-                      fontFamily: F.body,
-                      fontSize: 14,
-                      color: TEXT,
-                      opacity: 0.5,
-                    }}
-                  >
-                    Für Gruppen ab 5 Personen.
-                  </p>
-                  <motion.button
-                    onClick={onContact}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full px-7 min-h-[48px] cursor-pointer shrink-0"
-                    style={{
-                      background: `linear-gradient(135deg, ${GOLD}55, ${GOLD}25)`,
-                      border: `1px solid ${GOLD}80`,
-                      fontFamily: F.sc,
-                      fontSize:
-                        "clamp(0.8125rem,1.1vw,0.9375rem)",
-                      color: TEXT,
-                    }}
-                  >
-                    Jetzt anfragen
-                  </motion.button>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </Container>
-      </section>
-
-      <div
-        style={{
-          borderTop: `1px solid rgba(244,244,244,0.08)`,
-          background: "rgb(43,38,37)",
-        }}
-        className="py-5 text-center"
-      >
-        <p
-          style={{
-            fontFamily: F.body,
-            fontSize: 12,
-            color: TEXT,
-            opacity: 0.35,
-          }}
-        >
-          © 2026 Lena Maier · Ernährungsberatung
-        </p>
-      </div>
-    </SubPageShell>
-  );
-}
 
 // ────────────────────────────────────────────────────────────────
 // LEGAL PAGES
 // ────────────────────────────────────────────────────────────────
-type LegalPageId =
-  | "impressum"
-  | "datenschutz"
-  | "agb"
-  | "preise"
-  | "privatpersonen"
-  | "organisationen";
-
-type LegalOnlyId =
-  | "impressum"
-  | "datenschutz"
-  | "agb"
-  | "preise";
+type LegalOnlyId = "impressum" | "datenschutz" | "agb";
 const LEGAL_CONTENT: Record<
   LegalOnlyId,
   {
@@ -2715,26 +1232,6 @@ const LEGAL_CONTENT: Record<
     sections: { heading?: string; body: string }[];
   }
 > = {
-  preise: {
-    title: "Preise & Modelle",
-    sections: [
-      {
-        body: "Alle Angebote richten sich individuell nach deinen Zielen und deiner Situation. Eine persönliche Erstberatung ist kostenlos und unverbindlich.",
-      },
-      {
-        heading: "Persönliche Beratung – Privatpersonen",
-        body: "Erstgespräch (30 Min.): kostenlos\nEinzelstunde (60 Min.): [Preis eintragen]\nBeratungspaket (3 Sitzungen): [Preis eintragen]\nBeratungspaket (6 Sitzungen): [Preis eintragen]\n\nAlle Pakete beinhalten eine individuelle Ernährungsanalyse sowie schriftliche Auswertung und Empfehlungen.",
-      },
-      {
-        heading: "Vorträge  – Organisationen",
-        body: "Vortrag (60–90 Min.): [Preis eintragen]\nHalbtagsworkshop (3–4 Std.): [Preis eintragen]\nGanztagesworkshop (6–8 Std.): [Preis eintragen]\n\nAngebote für Schulen, Vereine und Unternehmen werden individuell nach Gruppengröße und Thema kalkuliert.",
-      },
-      {
-        heading: "Hinweis",
-        body: "Alle Preise verstehen sich als Endpreise. Eine Umsatzsteuer wird gemäß Kleinunternehmerregelung (§ 19 UStG) nicht ausgewiesen.\n\nFür ein individuelles Angebot oder bei Fragen melde dich gerne direkt bei mir.",
-      },
-    ],
-  },
   impressum: {
     title: "Impressum",
     sections: [
@@ -2839,32 +1336,20 @@ const LEGAL_CONTENT: Record<
   },
 };
 
-function LegalPage({
-  id,
-  onBack,
-}: {
-  id: LegalOnlyId;
-  onBack: () => void;
-}) {
+function LegalPage({ id }: { id: LegalOnlyId }) {
   const content = LEGAL_CONTENT[id];
+  const navigate = useNavigate();
+  const location = useLocation();
+  usePageMeta(
+    `${content.title} | Ernährungsberatung Lena Maier`,
+    `${content.title} der Ernährungsberatung Lena Maier.`,
+  );
+  // Back to where the visitor came from, or home on a direct visit
+  const onBack = () =>
+    location.key !== "default" ? navigate(-1) : navigate("/");
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 500,
-        overflowY: "auto",
-        background: "rgb(43,38,37)",
-      }}
-    >
-      <style>{`
-        *, *::before, *::after { box-sizing: border-box; }
-        body { margin: 0; overflow-x: hidden; background: rgb(43,38,37); }
-        img { display: block; max-width: 100%; }
-        button { cursor: pointer; }
-        button:focus-visible, a:focus-visible { outline: 2px solid ${GOLD}; outline-offset: 3px; }
-      `}</style>
+    <div style={{ minHeight: "100svh", background: "rgb(43,38,37)" }}>
 
       {/* Top bar */}
       <div
@@ -2996,117 +1481,85 @@ function LegalPage({
 }
 
 // ────────────────────────────────────────────────────────────────
-// SCROLL PROGRESS BAR
+// APP
 // ────────────────────────────────────────────────────────────────
-function ProgressBar() {
-  const [pct, setPct] = useState(0);
-  useEffect(() => {
-    const fn = () => {
-      const max =
-        document.documentElement.scrollHeight -
-        window.innerHeight;
-      setPct(
-        max > 0
-          ? Math.min(100, (window.scrollY / max) * 100)
-          : 0,
-      );
-    };
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
+// ────────────────────────────────────────────────────────────────
+// PAGES & ROUTING
+// ────────────────────────────────────────────────────────────────
+function HomePage() {
+  usePageMeta(
+    "Ernährungsberatung Lena Maier | Beratung & Vorträge",
+    "Persönliche Online-Ernährungsberatung mit Lena Maier: 8-Wochen-Begleitung, Einzelberatung für konkrete Fragen und Ernährungsvorträge für Unternehmen, Vereine und Bildungseinrichtungen.",
+  );
+  const goTo = useGoToSection();
   return (
-    <div
-      aria-hidden
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 200,
-        height: 2,
-        width: `${pct}%`,
-        background: `linear-gradient(90deg, ${GOLD}, ${GOLD_LITE})`,
-        transition: "width .12s linear",
-        pointerEvents: "none",
-      }}
-    />
+    <main>
+      <Hero onScrollTo={goTo} />
+      <About />
+      <Philosophy />
+      <Services />
+      <Vortraege />
+      <Contact />
+    </main>
   );
 }
 
-// ────────────────────────────────────────────────────────────────
-// APP
-// ────────────────────────────────────────────────────────────────
-export default function App() {
-  const [activePage, setActivePage] =
-    useState<LegalPageId | null>(null);
-
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const openContactAndClose = () => {
-    setActivePage(null);
-    requestAnimationFrame(() => {
-      const el = document.getElementById("contact");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    });
-  };
-
-  const legalIds: LegalOnlyId[] = [
-    "impressum",
-    "datenschutz",
-    "agb",
-    "preise",
-  ];
-  const isLegal =
-    activePage && legalIds.includes(activePage as LegalOnlyId);
-
+// Nav + footer around every content page
+function SiteLayout() {
+  const goTo = useGoToSection();
   return (
     <>
+      <Nav onScrollTo={goTo} />
+      <Outlet />
+      <Footer />
+    </>
+  );
+}
+
+function RootLayout() {
+  return (
+    <MotionConfig reducedMotion="user">
       <style>{`
         *, *::before, *::after { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { margin: 0; overflow-x: hidden; background: rgb(43,38,37); }
+        body { margin: 0; background: rgb(43,38,37); }
         img { display: block; max-width: 100%; }
         button { cursor: pointer; }
         button:focus-visible, a:focus-visible { outline: 2px solid ${GOLD}; outline-offset: 3px; }
         button, a { transition: transform 0.18s cubic-bezier(0.16,1,0.3,1); }
-        button:hover, a:hover { transform: scale(1.03); }
+        @media (hover: hover) {
+          button:hover, a:hover { transform: scale(1.03); }
+        }
       `}</style>
-
-      {activePage === "privatpersonen" && (
-        <PrivatpersonenPage
-          onBack={() => setActivePage(null)}
-          onContact={openContactAndClose}
-        />
-      )}
-      {activePage === "organisationen" && (
-        <OrganisationenPage
-          onBack={() => setActivePage(null)}
-          onContact={openContactAndClose}
-        />
-      )}
-      {isLegal && (
-        <LegalPage
-          id={activePage as LegalOnlyId}
-          onBack={() => setActivePage(null)}
-        />
-      )}
-
-      <Nav onScrollTo={scrollTo} />
-      <main>
-        <Hero onScrollTo={scrollTo} />
-        <About />
-        <Philosophy />
-        <Services
-          onOpenPrivat={() => setActivePage("privatpersonen")}
-          onOpenOrg={() => setActivePage("organisationen")}
-        />
-        <WhyItWorks />
-        <Contact />
-      </main>
-      <Footer onOpenLegal={(id) => setActivePage(id)} />
+      <Outlet />
+      {/* Top on new pages, saved position on back/forward, #hash targets */}
+      <ScrollRestoration />
       <Analytics />
-    </>
+    </MotionConfig>
   );
+}
+
+const router = createBrowserRouter([
+  {
+    element: <RootLayout />,
+    children: [
+      {
+        element: <SiteLayout />,
+        children: [
+          { path: "/", element: <HomePage /> },
+          { path: "/8-wochen-coaching", element: <CoachingPage /> },
+          { path: "/einzelberatung", element: <EinzelberatungPage /> },
+          { path: "/vortraege/:slug", element: <VortragPage /> },
+          { path: "/vortraege", element: <Navigate to="/#vortraege" replace /> },
+        ],
+      },
+      { path: "/impressum", element: <LegalPage id="impressum" /> },
+      { path: "/datenschutz", element: <LegalPage id="datenschutz" /> },
+      { path: "/agb", element: <LegalPage id="agb" /> },
+      { path: "*", element: <Navigate to="/" replace /> },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }

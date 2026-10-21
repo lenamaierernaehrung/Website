@@ -1,308 +1,157 @@
-@media (max-width: 767px) {
-	:root {
-		--mobile-gutter: 1.125rem;
+/* ── Hidden scrollbar, scrolling unchanged ────────────────────────
+   Only the visual scrollbar is removed. Wheel, trackpad, touch and
+   keyboard scrolling keep working because overflow is not touched. */
+html {
+	scrollbar-width: none; /* Firefox, Chrome 121+, Safari 18.2+ */
+	-ms-overflow-style: none; /* legacy Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+	display: none; /* older Chrome & Safari */
+	width: 0;
+	height: 0;
+}
+
+/* ── Hero tagline ─────────────────────────────────────────────────
+   One line on wider screens as before; on phones it may wrap instead
+   of pushing the layout wider than the viewport. */
+.hero-tagline {
+	font-size: clamp(0.6875rem, 3vw, 0.8125rem);
+	letter-spacing: 0.18em;
+	line-height: 1.7;
+	white-space: normal;
+	text-wrap: balance;
+}
+
+@media (min-width: 640px) {
+	.hero-tagline {
+		white-space: nowrap;
+	}
+}
+
+@media (max-width: 639px) {
+	.hero-tagline {
+		letter-spacing: 0.14em;
+	}
+}
+
+/* ── Timeline ─────────────────────────────────────────────────── */
+.timeline {
+	--tl-marker: 44px;
+}
+
+.timeline-step {
+	grid-template-columns: var(--tl-marker) minmax(0, 1fr);
+	column-gap: 1.25rem;
+}
+
+.timeline-marker {
+	width: var(--tl-marker);
+	height: var(--tl-marker);
+	font-size: 0.875rem;
+}
+
+/* Faint track; the gold line inside grows when the step is reached */
+.timeline-track {
+	top: calc(var(--tl-marker) + 10px);
+	bottom: 10px;
+	left: 50%;
+	width: 1px;
+	transform: translateX(-50%);
+	background: rgba(201, 166, 107, 0.16);
+}
+
+.timeline-title {
+	/* centre the first line on the marker */
+	padding-top: calc((var(--tl-marker) - 1.3em) / 2);
+}
+
+.timeline-gap {
+	padding-bottom: 4rem;
+}
+
+@media (min-width: 640px) {
+	.timeline {
+		--tl-marker: 52px;
 	}
 
-	html {
-		scroll-padding-top: 5.5rem;
+	.timeline-step {
+		column-gap: 2rem;
 	}
 
-	body {
-		overflow-x: hidden;
+	.timeline-marker {
+		font-size: 0.9375rem;
 	}
 
-	.mobile-container {
-		padding-right: var(--mobile-gutter) !important;
-		padding-left: var(--mobile-gutter) !important;
+	.timeline-gap {
+		padding-bottom: 5.5rem;
+	}
+}
+
+/* ── Links in offer & lecture cards ──────────────────────────────── */
+.offer-textlink {
+	transition: color 0.2s, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.offer-arrow {
+	transition: transform 0.2s;
+}
+
+@media (hover: hover) {
+	.offer-textlink:hover {
+		color: #ffe5c5 !important;
 	}
 
-	.mobile-nav {
-		padding: max(0.625rem, env(safe-area-inset-top)) 0.75rem 0 !important;
+	a:hover > .offer-arrow,
+	button:hover > .offer-arrow,
+	.lecture-card:hover .offer-arrow {
+		transform: translateX(3px);
+	}
+}
+
+/* The whole lecture card is clickable through its "Mehr erfahren" link */
+.lecture-card-link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+}
+
+.lecture-card-link:focus-visible {
+	outline: none !important;
+}
+
+.lecture-card:has(.lecture-card-link:focus-visible) {
+	outline: 2px solid #c9a66b;
+	outline-offset: 3px;
+}
+
+.lecture-card-image > * {
+	transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) {
+	.lecture-card:hover .lecture-card-image > * {
+		transform: scale(1.03);
 	}
 
-	.mobile-nav > div {
-		height: 58px !important;
-		padding-right: 1rem !important;
-		padding-left: 1rem !important;
+	/* keep the card itself still; only the image moves */
+	.lecture-card-link:hover {
+		transform: none !important;
 	}
+}
 
-	.back-to-top {
-		right: 1rem !important;
-		bottom: max(1rem, env(safe-area-inset-bottom)) !important;
-		width: 46px !important;
-		height: 46px !important;
-	}
-
-	.mobile-hero {
-		min-height: min(680px, 100svh) !important;
-		justify-content: center !important;
-		padding: 5.75rem var(--mobile-gutter) 2.25rem !important;
-	}
-
-	.mobile-hero > div:first-child {
-		max-width: 31rem !important;
-	}
-
-	.mobile-hero p:first-child {
-		margin-bottom: 1.25rem !important;
-		font-size: 0.625rem !important;
-		letter-spacing: 0.12em !important;
-		line-height: 1.45 !important;
-		white-space: normal !important;
-	}
-
-	.mobile-hero h1 {
-		margin-bottom: 0.25rem !important;
-		width: 100%;
-		font-size: clamp(1.2rem, 6vw, 1.45rem) !important;
-		line-height: 1.08 !important;
-		letter-spacing: 0.01em !important;
-	}
-
-	.mobile-hero h1 + p {
-		margin-bottom: 1.75rem !important;
-		font-size: clamp(1rem, 5vw, 1.25rem) !important;
-		letter-spacing: 0.45em !important;
-		padding-left: 0.45em;
-	}
-
-	.mobile-hero .max-w-\[200px\] {
-		margin-bottom: 1.5rem !important;
-	}
-
-	.mobile-hero .max-w-\[200px\] + p {
-		max-width: 19rem !important;
-		margin-bottom: 2rem !important;
-		font-size: 1rem !important;
-		line-height: 1.55 !important;
-	}
-
-	.mobile-hero .absolute.bottom-8 {
-		display: none;
-	}
-
-	.mobile-primary-button,
-	.mobile-ghost-button {
-		width: 100%;
-		min-height: 50px !important;
-		margin: 0 !important;
-		border-radius: 0.875rem !important;
-	}
-
-	.mobile-hero .mobile-primary-button,
-	.mobile-hero .mobile-ghost-button {
-		max-width: 23rem;
-	}
-
-	.mobile-section {
-		padding-top: 4.5rem !important;
-		padding-bottom: 4.5rem !important;
-	}
-
-	.mobile-section-label {
-		margin-bottom: 0.625rem !important;
-		font-size: 0.625rem !important;
-		letter-spacing: 0.14em !important;
-	}
-
-	.mobile-section-heading {
-		font-size: clamp(1.5rem, 7vw, 1.9rem) !important;
-		line-height: 1.16 !important;
-	}
-
-	.mobile-about {
-		padding-top: 3.5rem !important;
-	}
-
-	.mobile-about .relative[style*="aspect-ratio"] {
-		width: min(72vw, 18rem) !important;
-	}
-
-	.mobile-about .mobile-section-heading {
-		margin-bottom: 1rem !important;
-	}
-
-	.mobile-about .max-w-\[160px\] {
-		margin-bottom: 1.25rem !important;
-	}
-
-	.mobile-about-copy {
-		gap: 0.875rem !important;
-	}
-
-	.mobile-about-copy p {
-		font-size: 0.9375rem !important;
-		line-height: 1.55 !important;
-	}
-
-	.mobile-philosophy > .mobile-container > div:first-child,
-	.mobile-why > .mobile-container > div:first-child {
-		margin-bottom: 2rem !important;
-	}
-
-	.mobile-philosophy .mt-20 {
-		margin-top: 2.5rem !important;
-	}
-
-	.mobile-philosophy .mt-20 > div {
-		padding-top: 0 !important;
-		padding-bottom: 0 !important;
-	}
-
-	.mobile-feature-card {
-		gap: 0.75rem !important;
-		padding: 1.125rem !important;
-		border-radius: 0.875rem !important;
-	}
-
-	.mobile-feature-card > div:first-child {
-		width: 2.25rem !important;
-		height: 2.25rem !important;
-		border-radius: 0.625rem !important;
-	}
-
-	.mobile-feature-card h3 {
-		font-size: 1rem !important;
-		line-height: 1.28 !important;
-	}
-
-	.mobile-feature-card p {
-		font-size: 0.875rem !important;
-		line-height: 1.5 !important;
-	}
-
-	.mobile-section .grid {
-		gap: 0.75rem !important;
-	}
-
-	.mobile-services > .mobile-container > div:nth-child(2),
-	.mobile-why > .mobile-container > div:nth-child(2) {
-		margin-bottom: 2rem !important;
-	}
-
-	.mobile-services > .mobile-container > div:nth-child(2) p,
-	.mobile-why > .mobile-container > div:nth-child(2) p {
-		font-size: 0.9375rem !important;
-		line-height: 1.5 !important;
-	}
-
-	.mobile-service-card {
-		padding: 1.25rem !important;
-		border-radius: 0.875rem !important;
-	}
-
-	.mobile-service-card > span {
-		margin-bottom: 0.75rem !important;
-	}
-
-	.mobile-service-card h3 {
-		margin-bottom: 0.5rem !important;
-		font-size: 1.25rem !important;
-	}
-
-	.mobile-service-card > p {
-		margin-bottom: 1.25rem !important;
-		font-size: 0.9rem !important;
-		line-height: 1.5 !important;
-	}
-
-	.mobile-service-card > .flex.flex-col.gap-5 {
-		gap: 1rem !important;
-	}
-
-	.mobile-service-feature {
-		gap: 0.75rem !important;
-	}
-
-	.mobile-service-feature > div:first-child {
-		width: 2rem !important;
-		height: 2rem !important;
-		border-radius: 0.5rem !important;
-	}
-
-	.mobile-service-feature p:first-child {
-		font-size: 0.9375rem !important;
-		line-height: 1.3 !important;
-	}
-
-	.mobile-service-feature p:last-child {
-		font-size: 0.8125rem !important;
-		line-height: 1.4 !important;
-	}
-
-	.mobile-service-card button:last-child {
-		margin-top: 1.25rem !important;
-		min-height: 44px;
-	}
-
-	.mobile-contact > .mobile-container > div:first-child {
-		margin-bottom: 2rem !important;
-	}
-
-	.mobile-contact-card {
-		border-radius: 1rem !important;
-	}
-
-	.mobile-contact-card > div:first-child {
-		padding: 1.5rem 1.125rem !important;
-	}
-
-	.mobile-contact-card h3 {
-		font-size: 1.125rem !important;
-	}
-
-	.mobile-contact-card .text-center.mb-8 {
-		margin-bottom: 1.25rem !important;
-		font-size: 0.875rem !important;
-	}
-
-	.mobile-contact-card > div:nth-child(2) {
-		padding-right: 1.125rem !important;
-		padding-left: 1.125rem !important;
-	}
-
-	.mobile-contact-card > div:last-child {
-		padding: 0.75rem !important;
-	}
-
-	.mobile-contact-card button[type="button"] {
-		gap: 0.75rem !important;
-		padding: 0.75rem !important;
-		border-radius: 0.75rem !important;
-	}
-
-	.mobile-footer {
-		padding-top: 3rem !important;
-	}
-
-	.mobile-footer > div:first-child {
-		gap: 2rem !important;
-		padding-bottom: 2.5rem !important;
-		justify-items: center;
-		text-align: center !important;
-	}
-
-	.mobile-footer > div:first-child > * {
-		text-align: center !important;
-	}
-
-	.mobile-footer .items-start {
-		align-items: center !important;
-	}
-
-	.mobile-footer p,
-	.mobile-footer a {
-		font-size: 0.875rem !important;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		*,
-		*::before,
-		*::after {
-			scroll-behavior: auto !important;
-			transition-duration: 0.01ms !important;
-			animation-duration: 0.01ms !important;
-			animation-iteration-count: 1 !important;
-		}
+/* ── Reduced motion ──────────────────────────────────────────────
+   Motion-driven animations are handled by <MotionConfig
+   reducedMotion="user">; this covers CSS transitions. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
 	}
 }
